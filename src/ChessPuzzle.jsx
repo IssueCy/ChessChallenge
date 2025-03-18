@@ -6,12 +6,17 @@ function ChessPuzzle() {
     const [game, setGame] = useState(new Chess());
     const [puzzle, setPuzzle] = useState(null);
 
-    // Lädt zufälliges Puzzle aus puzzles.json
     const loadRandomPuzzle = async () => {
         try {
-            const response = await fetch("../../puzzles.json");
-            const puzzles = await response.json(); //! error is here
-            const randomPuzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
+            const response = await fetch("puzzles.json");
+            const puzzles = await response.json();
+    
+            const categories = Object.keys(puzzles);
+            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+    
+            const categoryPuzzles = puzzles[randomCategory];
+            const randomPuzzle = categoryPuzzles[Math.floor(Math.random() * categoryPuzzles.length)];
+    
             setPuzzle(randomPuzzle);
             setGame(new Chess(randomPuzzle.fen));
         } catch (error) {
@@ -26,9 +31,10 @@ function ChessPuzzle() {
             {puzzle && (
                 <div>
                     <p><strong>Hinweis:</strong> {puzzle.hint}</p>
-                    <Chessboard position={game.fen()} />
+                    <Chessboard boardWidth={400} position={game.fen()} />
                 </div>
             )}
+            <br />
         </div>
     );
 }

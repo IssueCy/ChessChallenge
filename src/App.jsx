@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 
+import Login from './Login';
 import ChessPuzzle from './ChessPuzzle';
 import Board from './Board';
 
@@ -9,8 +10,7 @@ function App() {
 
   return (
     <>
-      <ChessPuzzle />
-      <Board />
+      <Login />
     </>
   )
 }
