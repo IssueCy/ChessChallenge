@@ -1,12 +1,14 @@
 {
   "mi1": [
-    { "fen": "8/8/8/8/8/8/k6K/8 w - - 0 1", "solution": ["h2h3"], "hint": "Bewege den König" },
-    { "fen": "rnbqkb1r/pppppppp/7n/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", "solution": ["g1h3"], "hint": "Springer ziehen" }
+    { "fen": "r1bq2k1/2p2ppp/8/4P3/1pn5/P6P/1PP2PP1/1K1R3R w Kq - 0 1", "solution": [""], "hint": "" },
+    { "fen": "kr6/pp6/8/QN2P3/6p1/1P6/KP1q4/8 w - - 0 1", "solution": [""], "hint": "" }
   ],
+
   "mi2": [
-    { "fen": "8/8/8/8/8/8/k6K/8 w - - 0 1", "solution": ["h2h3", "h3h4"], "hint": "Zwei Züge zum Matt" }
+    { "fen": "", "solution": ["", ""], "hint": "" }
   ],
+
   "matwin": [
-    { "fen": "8/8/8/8/8/8/k6K/8 w - - 0 1", "solution": ["h2h3"], "hint": "Material gewinnen" }
+    { "fen": "", "solution": [""], "hint": "" }
   ]
 }
