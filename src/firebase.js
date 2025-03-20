@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBItyd-RH2CRGwbeAUgbkcy2mi_F-NeSBk",
-  authDomain: "simtec-chess-puzzle.firebaseapp.com",
-  projectId: "simtec-chess-puzzle",
-  storageBucket: "simtec-chess-puzzle.firebasestorage.app",
-  messagingSenderId: "13745527519",
-  appId: "1:13745527519:web:b517c0346db8390855a76a",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
