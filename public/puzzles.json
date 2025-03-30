@@ -1,0 +1,14 @@
+{
+  "mi1": [
+    { "fen": "r1bq2k1/2p2ppp/8/4P3/1pn5/P6P/1PP2PP1/1K1R3R w Kq - 0 1", "solution": [""], "hint": "" },
+    { "fen": "kr6/pp6/8/QN2P3/6p1/1P6/KP1q4/8 w - - 0 1", "solution": [""], "hint": "" }
+  ],
+
+  "mi2": [
+    { "fen": "", "solution": ["", ""], "hint": "" }
+  ],
+
+  "matwin": [
+    { "fen": "", "solution": [""], "hint": "" }
+  ]
+}
