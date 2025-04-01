@@ -6,3 +6,35 @@
   margin-top: 10rem;
   justify-self: center;
 }
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0px;
+  margin: 0px;
+  padding: 12px;
+  border-bottom: 1px solid rgba(80, 80, 122, 0.607);
+}
+
+.nav-left-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-account-button {
+  background: none;
+  padding: 0px;
+  align-items: center;
+}
+
+.nav-account-button:hover {
+  border: 1px solid transparent;
+}
+
+.nav-account-icon {
+  width: 2rem;
+}

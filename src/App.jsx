@@ -1,24 +1,23 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 import { useAuth } from "./auth";
-
 
 import Login from './Login';
 import MainPage from './MainPage';
-import ChessPuzzle from './ChessPuzzle';
-import Board from './Board';
 
 function App() {
   const { user, logout } = useAuth();
+  const [page, setPage] = useState("home");
 
   return (
     <>
       {user ? (
-        <MainPage user={user} logout={logout} />
+        <MainPage user={user} logout={logout} setPage={setPage} page={page} />
       ) : (
         <Login />
       )}
     </>
   );
 }
-export default App
+
+export default App;
