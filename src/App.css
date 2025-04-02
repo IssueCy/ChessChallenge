@@ -28,16 +28,6 @@
 .nav-account-button {
   background: none;
   padding: 0px;
-  align-items: center;
-}
-
-.nav-link-button {
-  background: none;
-  padding: 0px;
-}
-
-.nav-account-button:hover, .nav-link-button:hover {
-  border: 1px solid transparent;
 }
 
 .nav-account-icon {
@@ -79,4 +69,40 @@
 
 .dropdown-menu button:hover {
   background-color: #f5f5f5;
+}
+
+
+
+
+.mainPage-SelectPuzzle-section {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.mainSection-button-container {
+  box-sizing: border-box;
+  background-image: url('chessImage.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 200px;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border: none;
+  cursor: pointer;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+  transition: transform 0.2s ease-in-out;
+  box-shadow: 5px 5px 16px rgb(0, 0, 0);
+}
+
+.mainSection-button-container:hover {
+  transform: scale(1.02);
+  /*  apply filter  */
 }

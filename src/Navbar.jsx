@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "./auth";
+import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ headline = "ChessChallenge" }) {
   const { logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -20,13 +21,11 @@ function Navbar() {
 
   return (
     <div className="navbar">
-      <h1>ChessChallenge</h1>
+      <h1>{headline}</h1>
 
       <div className="nav-left-section">
-        <button className="nav-link-button">
-          <a href="#">Home</a>
-        </button>
-        <button>Submit your Puzzle</button>
+        <Link to="/" className="nav-link-button">Home</Link>
+        <Link to="/submit" className="nav-link-button">Submit your Puzzle</Link>
 
         <div className="dropdown" ref={dropdownRef}>
           <button className="nav-account-button" onClick={() => setIsOpen(!isOpen)}>

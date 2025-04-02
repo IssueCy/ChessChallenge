@@ -1,9 +1,11 @@
 import Navbar from "./Navbar";
+import SelectTypeSection from "./SelectTypeSection";
 
-function MainPage({logout, user}) {
+function MainPage({logout}) {
     return(
         <>
             <Navbar />
+            <SelectTypeSection />
         </>
         
     );
