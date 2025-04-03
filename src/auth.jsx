@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { createContext, useContext, useState, useEffect } from "react";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import app from "./firebase";
 
 const AuthContext = createContext();
@@ -9,6 +9,16 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // 🔄 Überwacht den Auth-Status (auch nach einem Reload)
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const login = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password);
@@ -27,7 +37,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, login, register, logout }}>
-      {children}
+      {!loading && children} {/* Verhindert das Rendern der App, bis Firebase geladen hat */}
     </AuthContext.Provider>
   );
 };
