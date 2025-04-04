@@ -29,7 +29,7 @@ function Navbar({ headline = "ChessChallenge" }) {
 
         <div className="dropdown" ref={dropdownRef}>
           <button className="nav-account-button" onClick={() => setIsOpen(!isOpen)}>
-            <img className="nav-account-icon" src="icon.png" alt="account icon" />
+            <img className="nav-account-icon" src="/icon.png" alt="account icon" />
           </button>
 
           {isOpen && (

@@ -1,7 +1,7 @@
 function Footer() {
     return(
         <div>
-            <h2>Testheadline</h2>
+            <h2>This is the Footer</h2>
         </div>
     );
 }

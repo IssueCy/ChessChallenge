@@ -1,7 +1,8 @@
 {
   "mi1": [
-    { "fen": "r1bq2k1/2p2ppp/8/4P3/1pn5/P6P/1PP2PP1/1K1R3R w Kq - 0 1", "solution": ["xd8#"], "hint": "The king can't escape, you only need to attack..." },
-    { "fen": "kr6/pp6/8/QN2P3/6p1/1P6/KP1q4/8 w - - 0 1", "solution": ["c7#"], "hint": "Sometimes, capturing does not only win material, but also makes you win!" }
+    { "fen": "r1bq2k1/2p2ppp/8/4P3/1pn5/P6P/1PP2PP1/1K1R3R w Kq - 0 1", "solution": ["xd8#"], "hint": "Sometimes, capturing does not only win material, but also makes you win!" },
+    { "fen": "kr6/pp6/8/QN2P3/6p1/1P6/KP1q4/8 w - - 0 1", "solution": ["c7#"], "hint": "The King can't escape, you only need to attack!" },
+    { "fen": "8/5pk1/Q3n3/8/4K2P/8/8/8 b - - 0 1", "solution": ["xd8#"], "hint": "Hint 3" }
   ],
 
   "mi2": [
