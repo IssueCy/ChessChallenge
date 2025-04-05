@@ -49,7 +49,7 @@ function ChessPuzzle() {
 
     useEffect(() => {
         const savedPuzzle = localStorage.getItem("currentPuzzle");
-    
+
         if (savedPuzzle) {
             const parsedPuzzle = JSON.parse(savedPuzzle);
             if (
@@ -59,14 +59,14 @@ function ChessPuzzle() {
             ) {
                 setPuzzle(parsedPuzzle);
                 setGame(new Chess(parsedPuzzle.fen));
-                return;
+                return; // Puzzle aus LocalStorage verwenden, falls es noch gültig ist
             } else {
                 console.warn("Ungültiges gespeichertes Puzzle, wird ignoriert.");
                 localStorage.removeItem("currentPuzzle");
             }
         }
-    
-        loadNewPuzzle();
+
+        loadNewPuzzle(); // Nur aufrufen, wenn kein Puzzle im LocalStorage oder das gespeicherte Puzzle ungültig ist
     }, [category]);
 
     const loadNewPuzzle = async () => {
@@ -74,14 +74,14 @@ function ChessPuzzle() {
             const response = await fetch("/puzzles.json");
             const puzzles = await response.json();
             const categoryPuzzles = puzzles[category];
-    
+
             if (!categoryPuzzles || categoryPuzzles.length === 0) {
                 console.error("Keine Puzzles in dieser Kategorie gefunden:", category);
                 return;
             }
-    
+
             const randomPuzzle = categoryPuzzles[Math.floor(Math.random() * categoryPuzzles.length)];
-    
+
             if (!randomPuzzle || !randomPuzzle.fen) {
                 console.error("Ungültiges Puzzle-Format:", randomPuzzle);
                 return;
@@ -90,12 +90,13 @@ function ChessPuzzle() {
             setShowHint(false);
             setPuzzle(randomPuzzle);
             setGame(new Chess(randomPuzzle.fen));
+
+            // Setze das Puzzle im LocalStorage nur, wenn der Benutzer explizit ein neues Puzzle anfordert
             localStorage.setItem("currentPuzzle", JSON.stringify({ ...randomPuzzle, category }));
         } catch (error) {
             console.error("Fehler beim Laden der Puzzles:", error);
         }
     };
-    
 
     return (
         <div>
