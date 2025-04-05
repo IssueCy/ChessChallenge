@@ -1,7 +1,8 @@
 import Navbar from "./Navbar";
 import SelectTypeSection from "./SelectTypeSection";
 
-function MainPage({logout}) {
+function MainPage() {
+
     return(
         <>
             <Navbar />
