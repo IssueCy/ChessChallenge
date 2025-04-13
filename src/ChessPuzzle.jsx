@@ -4,6 +4,17 @@ import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 
 function ChessPuzzle() {
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const hasReloaded = params.get("reloaded");
+
+        if (!hasReloaded) {
+            params.set("reloaded", "true");
+            window.location.search = params.toString();
+        }
+    }, []);
+
     const { category } = useParams();
     const navigate = useNavigate();
     const [game, setGame] = useState(new Chess());
@@ -59,14 +70,14 @@ function ChessPuzzle() {
             ) {
                 setPuzzle(parsedPuzzle);
                 setGame(new Chess(parsedPuzzle.fen));
-                return; // Puzzle aus LocalStorage verwenden, falls es noch gültig ist
+                return;
             } else {
                 console.warn("Ungültiges gespeichertes Puzzle, wird ignoriert.");
                 localStorage.removeItem("currentPuzzle");
             }
         }
 
-        loadNewPuzzle(); // Nur aufrufen, wenn kein Puzzle im LocalStorage oder das gespeicherte Puzzle ungültig ist
+        loadNewPuzzle();
     }, [category]);
 
     const loadNewPuzzle = async () => {
@@ -87,52 +98,44 @@ function ChessPuzzle() {
                 return;
             }
 
+            const fullPuzzle = { ...randomPuzzle, category };
+            localStorage.setItem("currentPuzzle", JSON.stringify(fullPuzzle));
+    
             setShowHint(false);
-            setPuzzle(randomPuzzle);
-            setGame(new Chess(randomPuzzle.fen));
-
-            // Setze das Puzzle im LocalStorage nur, wenn der Benutzer explizit ein neues Puzzle anfordert
-            localStorage.setItem("currentPuzzle", JSON.stringify({ ...randomPuzzle, category }));
+            setPuzzle(fullPuzzle);
+            setGame(new Chess(fullPuzzle.fen));
         } catch (error) {
             console.error("Fehler beim Laden der Puzzles:", error);
         }
     };
 
+    if (!puzzle) {
+        return <div>Lade Puzzle...</div>;
+    }
+    
     return (
         <div>
-            {puzzle && (
-                <div>
-
-                    <Chessboard
-                        boardWidth={400}
-                        position={game.fen()}
-                        onPieceDrop={handleMove}
-                        arePiecesDraggable={({ piece }) =>
-                            piece.startsWith(currentTurn)
-                        }
-                    />
-
-                </div>
-            )}
-
+            <Chessboard
+                boardWidth={400}
+                position={game.fen()}
+                onPieceDrop={handleMove}
+                arePiecesDraggable={({ piece }) =>
+                    piece.startsWith(currentTurn)
+                }
+            />
+    
             <br />
-
+    
             <button onClick={() => navigate("/")}>Zurück</button>
             <button onClick={loadNewPuzzle}>Neues Puzzle laden</button>
-
-            {puzzle && puzzle.hint && (
+    
+            {puzzle.hint && (
                 <>
                     {!showHint ? (
                         <button onClick={() => setShowHint(true)}>Tipp anzeigen</button>
                     ) : (
                         <p><strong>Tip:</strong> {puzzle.hint}</p>
                     )}
-                </>
-            )}
-
-            {puzzle && puzzle.solution && (
-                <>
-
                 </>
             )}
         </div>

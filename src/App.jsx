@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage logout={logout} />} />
           <Route path="/submit" element={<SubmitPuzzle />} />
-          <Route path="/puzzle/:category" element={<PuzzlePage />} /> {/* Neu */}
+          <Route path="/puzzle/:category" element={<PuzzlePage />} />
         </Routes>
       ) : (
         <Login />
