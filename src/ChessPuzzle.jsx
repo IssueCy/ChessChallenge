@@ -15,6 +15,23 @@ function ChessPuzzle() {
         }
     }, []);
 
+    const markPuzzleAsSolved = (puzzle) => {
+        const solved = JSON.parse(localStorage.getItem("solvedPuzzles") || "[]");
+        const puzzleKey = `${puzzle.category}-${puzzle.id}`;
+
+        if (!solved.includes(puzzleKey)) {
+            solved.push(puzzleKey);
+            localStorage.setItem("solvedPuzzles", JSON.stringify(solved));
+        }
+    };
+
+    const isPuzzleSolved = (puzzle) => {
+        const solved = JSON.parse(localStorage.getItem("solvedPuzzles") || "[]");
+        const puzzleKey = `${puzzle.category}-${puzzle.id}`;
+
+        return solved.includes(puzzleKey);
+    }
+
     const { category } = useParams();
     const navigate = useNavigate();
     const [game, setGame] = useState(new Chess());
@@ -38,6 +55,7 @@ function ChessPuzzle() {
 
             if (move.san === expectedMove) {
                 console.log("Richtiger Zug!");
+                markPuzzleAsSolved(puzzle);
                 //! Sweetalert popup here
             } else {
                 console.log(`Wrong move: ${move.san}, expected: ${expectedMove}`);
@@ -91,16 +109,25 @@ function ChessPuzzle() {
                 return;
             }
 
+            const unsolvedPuzzles = categoryPuzzles.filter(
+                (p) => !isPuzzleSolved({ ...p, category })
+            );
+
+            if (unsolvedPuzzles.length === 0) {
+                alert("All puzzles have been solved!");
+                //!     Sweetalert popup here
+                return;
+            }
+
             const randomPuzzle = categoryPuzzles[Math.floor(Math.random() * categoryPuzzles.length)];
+            const fullPuzzle = { ...randomPuzzle, category };
 
             if (!randomPuzzle || !randomPuzzle.fen) {
                 console.error("Ungültiges Puzzle-Format:", randomPuzzle);
                 return;
             }
-
-            const fullPuzzle = { ...randomPuzzle, category };
+            
             localStorage.setItem("currentPuzzle", JSON.stringify(fullPuzzle));
-    
             setShowHint(false);
             setPuzzle(fullPuzzle);
             setGame(new Chess(fullPuzzle.fen));

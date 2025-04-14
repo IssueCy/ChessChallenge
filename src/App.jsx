@@ -6,7 +6,6 @@ import Login from './Login';
 import MainPage from './MainPage';
 import SubmitPuzzle from "./SubmitPuzzle";
 import PuzzlePage from "./PuzzlePage";
-import ChessPuzzle from "./ChessPuzzle";
 
 function App() {
   const { user, logout } = useAuth();
