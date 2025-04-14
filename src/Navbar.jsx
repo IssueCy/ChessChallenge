@@ -34,7 +34,9 @@ function Navbar({ headline = "ChessChallenge" }) {
 
           {isOpen && (
             <div className="dropdown-menu">
-              <button>Profile</button>
+              <Link to="/account">
+                <button>Profile</button>
+              </Link>
               <button>Settings</button>
               <button onClick={logout}>Logout</button>
             </div>

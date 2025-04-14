@@ -17,7 +17,7 @@ function ChessPuzzle() {
 
     const markPuzzleAsSolved = (puzzle) => {
         const solved = JSON.parse(localStorage.getItem("solvedPuzzles") || "[]");
-        const puzzleKey = `${puzzle.category}-${puzzle.id}`;
+        const puzzleKey = `#${puzzle.id}`;
 
         if (!solved.includes(puzzleKey)) {
             solved.push(puzzleKey);
@@ -27,7 +27,7 @@ function ChessPuzzle() {
 
     const isPuzzleSolved = (puzzle) => {
         const solved = JSON.parse(localStorage.getItem("solvedPuzzles") || "[]");
-        const puzzleKey = `${puzzle.category}-${puzzle.id}`;
+        const puzzleKey = `#${puzzle.id}`;
 
         return solved.includes(puzzleKey);
     }
@@ -81,11 +81,7 @@ function ChessPuzzle() {
 
         if (savedPuzzle) {
             const parsedPuzzle = JSON.parse(savedPuzzle);
-            if (
-                parsedPuzzle.category === category &&
-                parsedPuzzle.fen &&
-                parsedPuzzle.solution
-            ) {
+            if (parsedPuzzle.fen && parsedPuzzle.solution) {
                 setPuzzle(parsedPuzzle);
                 setGame(new Chess(parsedPuzzle.fen));
                 return;
@@ -110,36 +106,36 @@ function ChessPuzzle() {
             }
 
             const unsolvedPuzzles = categoryPuzzles.filter(
-                (p) => !isPuzzleSolved({ ...p, category })
+                (p) => !isPuzzleSolved(p)
             );
 
             if (unsolvedPuzzles.length === 0) {
                 alert("All puzzles have been solved!");
-                //!     Sweetalert popup here
+                //! Sweetalert popup here
+                navigate("/");
                 return;
             }
 
-            const randomPuzzle = categoryPuzzles[Math.floor(Math.random() * categoryPuzzles.length)];
-            const fullPuzzle = { ...randomPuzzle, category };
+            const randomPuzzle = unsolvedPuzzles[Math.floor(Math.random() * unsolvedPuzzles.length)];
 
             if (!randomPuzzle || !randomPuzzle.fen) {
                 console.error("Ungültiges Puzzle-Format:", randomPuzzle);
                 return;
             }
-            
-            localStorage.setItem("currentPuzzle", JSON.stringify(fullPuzzle));
+
+            localStorage.setItem("currentPuzzle", JSON.stringify(randomPuzzle));
             setShowHint(false);
-            setPuzzle(fullPuzzle);
-            setGame(new Chess(fullPuzzle.fen));
+            setPuzzle(randomPuzzle);
+            setGame(new Chess(randomPuzzle.fen));
         } catch (error) {
             console.error("Fehler beim Laden der Puzzles:", error);
         }
     };
 
     if (!puzzle) {
-        return <div>Lade Puzzle...</div>;
+        return <div>Loading...</div>;
     }
-    
+
     return (
         <div>
             <Chessboard
@@ -150,12 +146,12 @@ function ChessPuzzle() {
                     piece.startsWith(currentTurn)
                 }
             />
-    
+
             <br />
-    
+
             <button onClick={() => navigate("/")}>Zurück</button>
             <button onClick={loadNewPuzzle}>Neues Puzzle laden</button>
-    
+
             {puzzle.hint && (
                 <>
                     {!showHint ? (

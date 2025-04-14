@@ -7,7 +7,7 @@
   ],
 
   "mi2": [
-    { "fen": "2Q2br1/rn5p/q5k1/pP4p1/6Pn/1P2P3/PB3P1P/1R2KN1R", "solution": ["e8+", "h6", "h5#"], "hint": "" }
+    { "id": 4, "fen": "r3k2r/pQp1nppp/8/5b2/3P1P1q/2P1P3/PP4BP/nNB2KR1 b - - 0 1", "solution": ["Bd3#"], "hint": "" }
   ],
 
   "matwin": [
