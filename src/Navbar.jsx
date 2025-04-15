@@ -23,13 +23,13 @@ function Navbar({ headline = "ChessChallenge" }) {
     <div className="navbar">
       <h1>{headline}</h1>
 
-      <div className="nav-left-section">
+      <div className="nav-right-section">
         <Link to="/" className="nav-link-button">Home</Link>
         <Link to="/submit" className="nav-link-button">Submit your Puzzle</Link>
 
         <div className="dropdown" ref={dropdownRef}>
           <button className="nav-account-button" onClick={() => setIsOpen(!isOpen)}>
-            <img className="nav-account-icon" src="/icon.png" alt="account icon" />
+            <img className="nav-account-icon" src="/account-icon.png" alt="account icon" />
           </button>
 
           {isOpen && (

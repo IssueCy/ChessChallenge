@@ -4,9 +4,9 @@ import Footer from "./Footer";
 
 function PuzzlePage() {
     return (
-        <div>
+        <div className="wrapper">
             <Navbar />
-            <div className="puzzle-container">
+            <div className="content">
                 <ChessPuzzle />
             </div>
             <Footer />

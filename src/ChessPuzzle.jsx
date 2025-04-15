@@ -137,30 +137,39 @@ function ChessPuzzle() {
     }
 
     return (
-        <div>
-            <Chessboard
-                boardWidth={400}
-                position={game.fen()}
-                onPieceDrop={handleMove}
-                arePiecesDraggable={({ piece }) =>
-                    piece.startsWith(currentTurn)
-                }
-            />
+        <div className="puzzle-container">
+            <div>
+                <Chessboard
+                    boardWidth={400}
+                    position={game.fen()}
+                    onPieceDrop={handleMove}
+                    arePiecesDraggable={({ piece }) =>
+                        piece.startsWith(currentTurn)
+                    }
+                />
+            </div>
 
             <br />
 
-            <button onClick={() => navigate("/")}>Zurück</button>
-            <button onClick={loadNewPuzzle}>Neues Puzzle laden</button>
+            <div className="button-section">
+                <button className="util-buttons" onClick={loadNewPuzzle}>Neues Puzzle laden</button>
 
-            {puzzle.hint && (
-                <>
-                    {!showHint ? (
-                        <button onClick={() => setShowHint(true)}>Tipp anzeigen</button>
-                    ) : (
-                        <p><strong>Tip:</strong> {puzzle.hint}</p>
-                    )}
-                </>
-            )}
+                {puzzle.hint && (
+                    <>
+                        {!showHint ? (
+                            <button className="util-buttons" onClick={() => setShowHint(true)}>Tipp anzeigen</button>
+                        ) : (
+                            <p><strong>Tip:</strong> {puzzle.hint}</p>
+                        )}
+                    </>
+                )}
+            </div>
+                <button className="util-buttons" onClick={() => navigate("/")}>Zurück</button>
+
+                <br />
+                <br />
+
+                <button className="button-as-link">Submit a problem</button>
         </div>
     );
 }

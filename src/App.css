@@ -18,7 +18,7 @@
   border-bottom: 1px solid rgba(80, 80, 122, 0.607);
 }
 
-.nav-left-section {
+.nav-right-section {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -28,10 +28,17 @@
 .nav-account-button {
   background: none;
   padding: 0px;
+  display: flex;
+  transition: 0.5s;
+}
+
+.nav-account-button:hover {
+  transform: rotate(360deg);
 }
 
 .nav-account-icon {
   width: 2rem;
+  border-radius: 12px;
 }
 
 .dropdown {
@@ -109,6 +116,26 @@
   /*  apply filter  */
 }
 
+/*? Chess Puzzle */
+
+.puzzle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4%;
+}
+
+.button-section {
+  display: flex;
+  margin: 12px;
+  gap: 12px;
+}
+
+.util-buttons {
+  width: 200px;
+}
+
 /*? account section*/
 
 .account-section {
@@ -144,13 +171,23 @@
 
 /*? FOOTER */
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
 .footer {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
   gap: 100px;
-
+  padding: 20px;
+  background-color: #040a166c; /* Beispielhintergrund */
 }
 
 .side-section {
@@ -161,5 +198,5 @@
 }
 
 .footer-icon {
-  width: 70px;
+  width: 50px;
 }
