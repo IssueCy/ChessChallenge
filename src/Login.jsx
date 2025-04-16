@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "./auth";
 import styled from "styled-components";
+import Footer from "./Footer";
 
 const Login = () => {
   const { login, register } = useAuth();
@@ -27,36 +28,42 @@ const Login = () => {
   };
 
   return (
-    <StyledWrapper>
-      <div className="card">
-        <h4 className="title">Login oder Registrieren</h4>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <form>
-          <div className="field">
-            <input 
-              autoComplete="off" 
-              placeholder="Email" 
-              className="input-field" 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+    <div className="wrapper">
+      <div className="content">
+        <StyledWrapper>
+          <div className="card">
+            <h4 className="title">Login oder Registrieren</h4>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <form>
+              <div className="field">
+                <input
+                  autoComplete="off"
+                  placeholder="Email"
+                  className="input-field"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="field">
+                <input
+                  autoComplete="off"
+                  placeholder="Password"
+                  className="input-field"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <button className="btn" onClick={handleLogin}>Login</button>
+              <button className="btn" onClick={handleRegister}>Registrieren</button>
+            </form>
           </div>
-          <div className="field">
-            <input 
-              autoComplete="off" 
-              placeholder="Password" 
-              className="input-field" 
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button className="btn" onClick={handleLogin}>Login</button>
-          <button className="btn" onClick={handleRegister}>Registrieren</button>
-        </form>
+        </StyledWrapper>
       </div>
-    </StyledWrapper>
+      <Footer />
+    </div>
+
   );
 };
 

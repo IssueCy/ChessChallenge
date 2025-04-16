@@ -12,19 +12,23 @@ import Privacy from "./Privacy";
 function App() {
   const { user, logout } = useAuth();
 
-  return (
+return (
     <Router>
-      {user ? (
-        <Routes>
-          <Route path="/" element={<MainPage logout={logout} />} />
-          <Route path="/submit" element={<SubmitPuzzle />} />
-          <Route path="/puzzle/:category" element={<PuzzlePage />} />
-          <Route path="/account" element={<AccountSection />} />
-          <Route path="/privacy" element={<Privacy />} />
-        </Routes>
-      ) : (
-        <Login />
-      )}
+      <Routes>
+        {/* Öffentliche Route – jeder darf hierhin */}
+        <Route path="/privacy" element={<Privacy />} />
+
+        {user ? (
+          <>
+            <Route path="/" element={<MainPage logout={logout} />} />
+            <Route path="/submit" element={<SubmitPuzzle />} />
+            <Route path="/puzzle/:category" element={<PuzzlePage />} />
+            <Route path="/account" element={<AccountSection />} />
+          </>
+        ) : (
+          <Route path="*" element={<Login />} />
+        )}
+      </Routes>
     </Router>
   );
 }
