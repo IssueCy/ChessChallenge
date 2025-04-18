@@ -8,6 +8,7 @@ import SubmitPuzzle from "./SubmitPuzzle";
 import PuzzlePage from "./PuzzlePage";
 import AccountSection from "./AccountSection";
 import Privacy from "./Privacy";
+import Settings from "./Settings";
 
 function App() {
   const { user, logout } = useAuth();
@@ -15,7 +16,6 @@ function App() {
 return (
     <Router>
       <Routes>
-        {/* Öffentliche Route – jeder darf hierhin */}
         <Route path="/privacy" element={<Privacy />} />
 
         {user ? (
@@ -24,6 +24,7 @@ return (
             <Route path="/submit" element={<SubmitPuzzle />} />
             <Route path="/puzzle/:category" element={<PuzzlePage />} />
             <Route path="/account" element={<AccountSection />} />
+            <Route path="/settings" element={<Settings />} />
           </>
         ) : (
           <Route path="*" element={<Login />} />

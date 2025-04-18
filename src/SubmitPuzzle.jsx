@@ -6,7 +6,7 @@ function SubmitPuzzle() {
         <div className="wrapper">
             <Navbar headline="Submit your own puzzle!" />
             <div className="content">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae nihil aut delectus, dolor odit non tempora nobis iure quibusdam sit?</p>
+                <p>Coming soon...</p>
             </div>
             <Footer />
         </div>

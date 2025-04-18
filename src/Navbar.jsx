@@ -37,7 +37,9 @@ function Navbar({ headline = "ChessChallenge" }) {
               <Link to="/account">
                 <button>Profile</button>
               </Link>
-              <button>Settings</button>
+              <Link to="/settings">
+                <button>Settings</button>
+              </Link>
               <button onClick={logout}>Logout</button>
             </div>
           )}

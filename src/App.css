@@ -167,6 +167,7 @@
 
 .logout-button, .delete-button {
   width: 200px;
+  color: white;
 }
 
 /*? FOOTER */
