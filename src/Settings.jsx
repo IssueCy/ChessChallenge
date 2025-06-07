@@ -1,11 +1,23 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Settings() {
+    const navigate = useNavigate();
 
     function clearSolvedPuzzles() {
         localStorage.removeItem("solvedPuzzles");
+        Swal.fire(
+            'Succes',
+            'Successfully deleted solved puzzles!',
+            'success'
+        ).then((result) => {
+            if (result.isConfirmed) {
+                navigate('/');
+            }
+        });
+
     }
 
     return (

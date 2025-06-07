@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
+import Swal from "sweetalert2";
+import fireContactForm from "./FireContactForm";
+
 
 function ChessPuzzle() {
 
@@ -38,6 +41,21 @@ function ChessPuzzle() {
     const [puzzle, setPuzzle] = useState(null);
     const [showHint, setShowHint] = useState(false);
 
+    function displayUserSolvedPuzzleCorrectly() {
+        Swal.fire({
+            title: '',
+            text: 'You found the right move!',
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'Load new puzzle',
+            cancelButtonText: 'Keep me on this puzzle',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                loadNewPuzzle();
+            }
+        });
+    }
+
     const handleMove = (sourceSquare, targetSquare) => {
         try {
             const move = game.move({
@@ -56,9 +74,12 @@ function ChessPuzzle() {
             if (move.san === expectedMove) {
                 console.log("Richtiger Zug!");
                 markPuzzleAsSolved(puzzle);
-                //! Sweetalert popup here
+                displayUserSolvedPuzzleCorrectly();
             } else {
-                console.log(`Wrong move: ${move.san}, expected: ${expectedMove}`);
+                console.log(`Wrong move: ${move.san}, expected: ${expectedMove}`); // delete before production
+                
+                boardElement.classList.add("invalid-move");
+                setTimeout(() => boardElement.classList.remove("invalid-move"), 300);
 
                 setTimeout(() => {
                     setGame(new Chess(puzzle.fen));
@@ -110,7 +131,7 @@ function ChessPuzzle() {
             );
 
             if (unsolvedPuzzles.length === 0) {
-                alert("All puzzles have been solved!");
+                alert("All puzzles have been solved!\nNavigate to the account settings to reset your solved puzzles - or wait until new ones!");
                 //! Sweetalert popup here
                 navigate("/");
                 return;
@@ -138,7 +159,7 @@ function ChessPuzzle() {
 
     return (
         <div className="puzzle-container">
-            <div>
+            <div id="boardElement">
                 <Chessboard
                     boardWidth={400}
                     position={game.fen()}
@@ -164,12 +185,12 @@ function ChessPuzzle() {
                     </>
                 )}
             </div>
-                <button className="util-buttons" onClick={() => navigate("/")}>Zurück</button>
+            <button className="util-buttons" onClick={() => navigate("/")}>Zurück</button>
 
-                <br />
-                <br />
+            <br />
+            <br />
 
-                <button className="button-as-link">Submit a problem</button>
+            <button onClick={fireContactForm} className="button-as-link">Submit a problem</button>
         </div>
     );
 }
