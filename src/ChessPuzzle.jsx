@@ -148,6 +148,20 @@ function ChessPuzzle() {
             setShowHint(false);
             setPuzzle(randomPuzzle);
             setGame(new Chess(randomPuzzle.fen));
+
+            //* what color to move?
+            let whoToMove_container = document.getElementById('whoToMove');
+            let color = randomPuzzle.color;
+            let whatColorToMove
+
+            if (color == "b") {
+                whatColorToMove = "Black";
+            } else {
+                whatColorToMove = "White";
+            }
+
+            whoToMove_container.innerHTML = whatColorToMove;
+
         } catch (error) {
             console.error("Fehler beim Laden der Puzzles:", error);
         }
@@ -156,6 +170,8 @@ function ChessPuzzle() {
     if (!puzzle) {
         return <div>Loading...</div>;
     }
+
+    
 
     return (
         <div className="puzzle-container">
@@ -171,6 +187,9 @@ function ChessPuzzle() {
             </div>
 
             <br />
+
+                    <div className="whoToMove" id="whoToMove">
+                    </div>
 
             <div className="button-section">
                 <button className="util-buttons" onClick={loadNewPuzzle}>Neues Puzzle laden</button>
