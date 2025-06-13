@@ -136,6 +136,11 @@
   width: 200px;
 }
 
+.whoToMove {
+  font-weight: bold;
+  margin: 12px;
+}
+
 /*? account section*/
 
 .account-section {

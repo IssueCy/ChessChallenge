@@ -40,6 +40,7 @@ function ChessPuzzle() {
     const [game, setGame] = useState(new Chess());
     const [puzzle, setPuzzle] = useState(null);
     const [showHint, setShowHint] = useState(false);
+    const [colorToMove, setColorToMove] = useState("");
 
     function displayUserSolvedPuzzleCorrectly() {
         Swal.fire({
@@ -77,7 +78,7 @@ function ChessPuzzle() {
                 displayUserSolvedPuzzleCorrectly();
             } else {
                 console.log(`Wrong move: ${move.san}, expected: ${expectedMove}`); // delete before production
-                
+
                 boardElement.classList.add("invalid-move");
                 setTimeout(() => boardElement.classList.remove("invalid-move"), 300);
 
@@ -115,6 +116,14 @@ function ChessPuzzle() {
         loadNewPuzzle();
     }, [category]);
 
+    //? what color to move
+    useEffect(() => {
+        if (puzzle?.color) {
+            setColorToMove(puzzle.color === "b" ? "Black" : "White");
+        }
+    }, [puzzle]);
+
+
     const loadNewPuzzle = async () => {
         try {
             const response = await fetch("/puzzles.json");
@@ -131,10 +140,17 @@ function ChessPuzzle() {
             );
 
             if (unsolvedPuzzles.length === 0) {
-                alert("All puzzles have been solved!\nNavigate to the account settings to reset your solved puzzles - or wait until new ones!");
-                //! Sweetalert popup here
-                navigate("/");
-                return;
+                Swal.fire({
+                    title: 'All puzzles have been solved!',
+                    text: 'Navigate to the account settings to reset your solved puzzles - or wait until new ones!',
+                    icon: 'info',
+                    confirmButtonText: 'Back to home',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate("/");
+                        return;
+                    }
+                });
             }
 
             const randomPuzzle = unsolvedPuzzles[Math.floor(Math.random() * unsolvedPuzzles.length)];
@@ -149,18 +165,9 @@ function ChessPuzzle() {
             setPuzzle(randomPuzzle);
             setGame(new Chess(randomPuzzle.fen));
 
-            //* what color to move?
-            let whoToMove_container = document.getElementById('whoToMove');
-            let color = randomPuzzle.color;
-            let whatColorToMove
+            //? what color to move?
 
-            if (color == "b") {
-                whatColorToMove = "Black";
-            } else {
-                whatColorToMove = "White";
-            }
-
-            whoToMove_container.innerHTML = whatColorToMove;
+            setColorToMove(randomPuzzle.color === "b" ? "Black" : "White");
 
         } catch (error) {
             console.error("Fehler beim Laden der Puzzles:", error);
@@ -171,7 +178,7 @@ function ChessPuzzle() {
         return <div>Loading...</div>;
     }
 
-    
+
 
     return (
         <div className="puzzle-container">
@@ -188,8 +195,12 @@ function ChessPuzzle() {
 
             <br />
 
-                    <div className="whoToMove" id="whoToMove">
-                    </div>
+            {colorToMove && (
+                <div className="whoToMove">
+                    {colorToMove} to move
+                </div>
+            )}
+
 
             <div className="button-section">
                 <button className="util-buttons" onClick={loadNewPuzzle}>Neues Puzzle laden</button>
