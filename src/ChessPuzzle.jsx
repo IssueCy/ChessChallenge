@@ -41,6 +41,9 @@ function ChessPuzzle() {
     const [puzzle, setPuzzle] = useState(null);
     const [showHint, setShowHint] = useState(false);
     const [colorToMove, setColorToMove] = useState("");
+    const [currentStep, setCurrentStep] = useState(0);
+    const [solutionShown, setSolutionShown] = useState(false);
+
 
     function displayUserSolvedPuzzleCorrectly() {
         Swal.fire({
@@ -58,43 +61,69 @@ function ChessPuzzle() {
     }
 
     const handleMove = (sourceSquare, targetSquare) => {
-        try {
-            const move = game.move({
-                from: sourceSquare,
-                to: targetSquare,
-                promotion: "q",
-            });
-
-            if (move === null) {
-                console.log("Ungültiger Zug");
-                return false;
-            }
-
-            const expectedMove = puzzle.solution[0];
-
-            if (move.san === expectedMove) {
-                console.log("Richtiger Zug!");
+        const move = game.move({
+            from: sourceSquare,
+            to: targetSquare,
+            promotion: "q",
+        });
+    
+        if (move === null) return false;
+    
+        const expectedMove = puzzle.solution[currentStep];
+    
+        if (move.san === expectedMove) {
+            const newGame = new Chess(game.fen());
+            setGame(newGame);
+    
+            if (currentStep + 1 < puzzle.solution.length) {
+                setTimeout(() => {
+                    const computerMove = puzzle.solution[currentStep + 1];
+                    newGame.move(computerMove);
+                    setGame(new Chess(newGame.fen()));
+                    setCurrentStep(currentStep + 2); // weiter zum nächsten Spielerzug
+                }, 600);
+            } else {
                 markPuzzleAsSolved(puzzle);
                 displayUserSolvedPuzzleCorrectly();
-            } else {
-                console.log(`Wrong move: ${move.san}, expected: ${expectedMove}`); // delete before production
-
-                boardElement.classList.add("invalid-move");
-                setTimeout(() => boardElement.classList.remove("invalid-move"), 300);
-
-                setTimeout(() => {
-                    setGame(new Chess(puzzle.fen));
-                }, 500);
             }
-
-            setGame(new Chess(game.fen()));
-            return true;
-
-        } catch (error) {
-            console.log("Fehler beim Zug:", error.message);
-            return false;
+        } else {
+            // Fehleranimation & Rücksetzen
+            const boardElement = document.getElementById("boardElement");
+            boardElement.classList.add("invalid-move");
+            setTimeout(() => boardElement.classList.remove("invalid-move"), 300);
+    
+            // Game zurücksetzen
+            setTimeout(() => {
+                const newGame = new Chess(puzzle.fen);
+                setGame(newGame);
+                setCurrentStep(0);
+            }, 500);
         }
+    
+        return true;
     };
+
+    const animateSolution = async () => {
+        if (!puzzle || !puzzle.solution || puzzle.solution.length === 0) return;
+
+        const tempGame = new Chess(puzzle.fen);
+        const moves = puzzle.solution;
+
+        for (let i = 0; i < moves.length; i++) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
+            tempGame.move(moves[i]);
+            setGame(new Chess(tempGame.fen()));
+        }
+
+        setSolutionShown(true);
+    };
+
+    const resetPuzzle = () => {
+        if (!puzzle) return;
+        setGame(new Chess(puzzle.fen));
+        setSolutionShown(false);
+    }
+
 
     const currentTurn = game.turn();
 
@@ -103,7 +132,7 @@ function ChessPuzzle() {
 
         if (savedPuzzle) {
             const parsedPuzzle = JSON.parse(savedPuzzle);
-            if (parsedPuzzle.fen && parsedPuzzle.solution) {
+            if (parsedPuzzle.fen && parsedPuzzle.solution && parsedPuzzle.category === category) {
                 setPuzzle(parsedPuzzle);
                 setGame(new Chess(parsedPuzzle.fen));
                 return;
@@ -141,7 +170,7 @@ function ChessPuzzle() {
 
             if (unsolvedPuzzles.length === 0) {
                 Swal.fire({
-                    title: 'All puzzles have been solved!',
+                    title: 'All puzzles in this category have been solved!',
                     text: 'Navigate to the account settings to reset your solved puzzles - or wait until new ones!',
                     icon: 'info',
                     confirmButtonText: 'Back to home',
@@ -156,11 +185,14 @@ function ChessPuzzle() {
             const randomPuzzle = unsolvedPuzzles[Math.floor(Math.random() * unsolvedPuzzles.length)];
 
             if (!randomPuzzle || !randomPuzzle.fen) {
-                console.error("Ungültiges Puzzle-Format:", randomPuzzle);
+                console.warn("False puzzle format or no puzzle left.")
                 return;
             }
 
-            localStorage.setItem("currentPuzzle", JSON.stringify(randomPuzzle));
+            localStorage.setItem("currentPuzzle", JSON.stringify({
+                ...randomPuzzle,
+                category: category
+            }));
             setShowHint(false);
             setPuzzle(randomPuzzle);
             setGame(new Chess(randomPuzzle.fen));
@@ -214,6 +246,13 @@ function ChessPuzzle() {
                         )}
                     </>
                 )}
+
+                {solutionShown ? (
+                    <button className="util-buttons" id="resetButton" onClick={resetPuzzle}>Reset puzzle</button>
+                ) : (
+                    <button className="util-buttons" onClick={animateSolution}>Show solution</button>
+                )}
+
             </div>
             <button className="util-buttons" onClick={() => navigate("/")}>Zurück</button>
 
@@ -222,7 +261,10 @@ function ChessPuzzle() {
 
             <button onClick={fireContactForm} className="button-as-link">Submit a problem</button>
         </div>
+
     );
+
+
 }
 
 export default ChessPuzzle;
