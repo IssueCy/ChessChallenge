@@ -121,6 +121,7 @@ function ChessPuzzle() {
         if (!puzzle) return;
         setGame(new Chess(puzzle.fen));
         setSolutionShown(false);
+        setCurrentStep(0);
     }
 
 
@@ -136,7 +137,7 @@ function ChessPuzzle() {
                 setGame(new Chess(parsedPuzzle.fen));
                 return;
             } else {
-                console.warn("Ungültiges gespeichertes Puzzle, wird ignoriert.");
+                console.warn("Invalid saved puzzle, ignoring");
                 localStorage.removeItem("currentPuzzle");
             }
         }
@@ -159,7 +160,7 @@ function ChessPuzzle() {
             const categoryPuzzles = puzzles[category];
 
             if (!categoryPuzzles || categoryPuzzles.length === 0) {
-                console.error("Keine Puzzles in dieser Kategorie gefunden:", category);
+                console.error("No puzzle found in this category: ", category);
                 return;
             }
 
@@ -202,12 +203,12 @@ function ChessPuzzle() {
             setSolutionShown(false);
 
         } catch (error) {
-            console.error("Fehler beim Laden der Puzzles:", error);
+            console.error("Error while loading puzzle: ", error);
         }
     };
 
     if (!puzzle) {
-        return <div>Loading...</div>;
+        return <div><p>Loading... If this takes longer than 10 seconds, there is a problem with the puzzles.</p></div>;
     }
 
 
@@ -235,12 +236,12 @@ function ChessPuzzle() {
 
 
             <div className="button-section">
-                <button className="util-buttons" onClick={loadNewPuzzle}>Neues Puzzle laden</button>
+                <button className="util-buttons" onClick={loadNewPuzzle}>New puzzle</button>
 
                 {puzzle.hint && (
                     <>
                         {!showHint ? (
-                            <button className="util-buttons" onClick={() => setShowHint(true)}>Tipp anzeigen</button>
+                            <button className="util-buttons" onClick={() => setShowHint(true)}>Hint</button>
                         ) : (
                             <p><strong>Tip:</strong> {puzzle.hint}</p>
                         )}
@@ -254,7 +255,7 @@ function ChessPuzzle() {
                 )}
 
             </div>
-            <button className="util-buttons" onClick={() => navigate("/")}>Zurück</button>
+            <button className="util-buttons" onClick={() => navigate("/")}>Back</button>
 
             <br />
             <br />
