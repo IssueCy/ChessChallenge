@@ -80,19 +80,18 @@ function ChessPuzzle() {
                     const computerMove = puzzle.solution[currentStep + 1];
                     newGame.move(computerMove);
                     setGame(new Chess(newGame.fen()));
-                    setCurrentStep(currentStep + 2); // weiter zum nächsten Spielerzug
+                    setCurrentStep(currentStep + 2);
                 }, 600);
             } else {
                 markPuzzleAsSolved(puzzle);
                 displayUserSolvedPuzzleCorrectly();
+                setSolutionShown(true);
             }
         } else {
-            // Fehleranimation & Rücksetzen
             const boardElement = document.getElementById("boardElement");
             boardElement.classList.add("invalid-move");
             setTimeout(() => boardElement.classList.remove("invalid-move"), 300);
     
-            // Game zurücksetzen
             setTimeout(() => {
                 const newGame = new Chess(puzzle.fen);
                 setGame(newGame);
@@ -198,8 +197,9 @@ function ChessPuzzle() {
             setGame(new Chess(randomPuzzle.fen));
 
             //? what color to move?
-
             setColorToMove(randomPuzzle.color === "b" ? "Black" : "White");
+
+            setSolutionShown(false);
 
         } catch (error) {
             console.error("Fehler beim Laden der Puzzles:", error);

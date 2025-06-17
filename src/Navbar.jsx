@@ -25,7 +25,7 @@ function Navbar({ headline = "ChessChallenge" }) {
 
       <div className="nav-right-section">
         <Link to="/" className="nav-link-button">Home</Link>
-        <Link to="/submit" className="nav-link-button">Submit your Puzzle</Link>
+        <Link to="/submit" className="nav-link-button">Submit own Puzzle</Link>
 
         <div className="dropdown" ref={dropdownRef}>
           <button className="nav-account-button" onClick={() => setIsOpen(!isOpen)}>
