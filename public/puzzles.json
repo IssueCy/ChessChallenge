@@ -1,8 +1,8 @@
 {
   "mi1": [
-    { "id": 0, "fen": "r1bq2k1/2p2ppp/8/4P3/1pn5/P6P/1PP2PP1/1K1R3R w Kq - 0 1", "solution": ["Rxd8#"], "color": "w", "hint": "Sometimes, capturing does not only win material, but also makes you win!" },
-    { "id": 1, "fen": "kr6/pp6/8/QN2P3/6p1/1P6/KP1q4/8 w - - 0 1", "solution": ["Nc7#"], "color": "w", "hint": "The King can't escape, you only need to attack!" },
-    { "id": 2, "fen": "8/5pk1/Q3n3/8/4K2P/8/8/8 b - - 0 1", "solution": ["Nc5+"], "color": "b", "hint": "Hint 3" },
+    { "id": 0, "fen": "r1bq2k1/2p2ppp/8/4P3/1pn5/P6P/1PP2PP1/1K1R3R w Kq - 0 1", "solution": ["Rxd8#"], "color": "w", "hint": "h6" },
+    { "id": 1, "fen": "kr6/pp6/8/QN2P3/6p1/1P6/KP1q4/8 w - - 0 1", "solution": ["Nc7#"], "color": "w", "hint": "b4" },
+    { "id": 2, "fen": "8/5pk1/Q3n3/8/4K2P/8/8/8 b - - 0 1", "solution": ["Nc5+"], "color": "b", "hint": "a2" },
     { "id": 3, "fen": "r3k2r/pQp1nppp/8/5b2/3P1P1q/2P1P3/PP4BP/nNB2KR1 b - - 0 1", "solution": ["Bd3#"], "color": "b", "hint": "Hint 4" }
   ],
 

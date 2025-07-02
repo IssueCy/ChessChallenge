@@ -43,6 +43,7 @@ function ChessPuzzle() {
     const [colorToMove, setColorToMove] = useState("");
     const [currentStep, setCurrentStep] = useState(0);
     const [solutionShown, setSolutionShown] = useState(false);
+    const [hintSquare, setHintSquare] = useState(null);
 
 
     function displayUserSolvedPuzzleCorrectly() {
@@ -66,15 +67,15 @@ function ChessPuzzle() {
             to: targetSquare,
             promotion: "q",
         });
-    
+
         if (move === null) return false;
-    
+
         const expectedMove = puzzle.solution[currentStep];
-    
+
         if (move.san === expectedMove) {
             const newGame = new Chess(game.fen());
             setGame(newGame);
-    
+
             if (currentStep + 1 < puzzle.solution.length) {
                 setTimeout(() => {
                     const computerMove = puzzle.solution[currentStep + 1];
@@ -91,14 +92,14 @@ function ChessPuzzle() {
             const boardElement = document.getElementById("boardElement");
             boardElement.classList.add("invalid-move");
             setTimeout(() => boardElement.classList.remove("invalid-move"), 300);
-    
+
             setTimeout(() => {
                 const newGame = new Chess(puzzle.fen);
                 setGame(newGame);
                 setCurrentStep(0);
             }, 500);
         }
-    
+
         return true;
     };
 
@@ -220,10 +221,18 @@ function ChessPuzzle() {
                     boardWidth={400}
                     position={game.fen()}
                     onPieceDrop={handleMove}
-                    arePiecesDraggable={({ piece }) =>
-                        piece.startsWith(currentTurn)
+                    arePiecesDraggable={({ piece }) => piece.startsWith(currentTurn)}
+                    customSquareStyles={
+                        hintSquare
+                            ? {
+                                [hintSquare]: {
+                                    backgroundColor: "rgba(105, 220, 76, 0.6)",
+                                },
+                            }
+                            : {}
                     }
                 />
+
             </div>
 
             <br />
@@ -239,14 +248,17 @@ function ChessPuzzle() {
                 <button className="util-buttons" onClick={loadNewPuzzle}>New puzzle</button>
 
                 {puzzle.hint && (
-                    <>
-                        {!showHint ? (
-                            <button className="util-buttons" onClick={() => setShowHint(true)}>Hint</button>
-                        ) : (
-                            <p><strong>Tip:</strong> {puzzle.hint}</p>
-                        )}
-                    </>
+                    <button
+                        className="util-buttons"
+                        onClick={() => {
+                            setHintSquare(puzzle.hint);
+                            setTimeout(() => setHintSquare(null), 2000);
+                        }}
+                    >
+                        Hint
+                    </button>
                 )}
+
 
                 {solutionShown ? (
                     <button className="util-buttons" id="resetButton" onClick={resetPuzzle}>Reset puzzle</button>
