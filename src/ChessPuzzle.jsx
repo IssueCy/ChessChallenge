@@ -247,17 +247,25 @@ function ChessPuzzle() {
             <div className="button-section">
                 <button className="util-buttons" onClick={loadNewPuzzle}>New puzzle</button>
 
-                {puzzle.hint && (
+                {puzzle.solution && currentStep < puzzle.solution.length && (
                     <button
                         className="util-buttons"
                         onClick={() => {
-                            setHintSquare(puzzle.hint);
-                            setTimeout(() => setHintSquare(null), 2000);
+                            const nextMoveSAN = puzzle.solution[currentStep];
+                            const tempGame = new Chess(game.fen());
+                            const legalMoves = tempGame.moves({ verbose: true });
+                            const matchedMove = legalMoves.find((m) => m.san === nextMoveSAN);
+
+                            if (matchedMove) {
+                                setHintSquare(matchedMove.from);
+                                setTimeout(() => setHintSquare(null), 2000);
+                            }
                         }}
                     >
                         Hint
                     </button>
                 )}
+
 
 
                 {solutionShown ? (
