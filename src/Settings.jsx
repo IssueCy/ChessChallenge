@@ -24,15 +24,16 @@ function Settings() {
         <div className="wrapper">
             <Navbar headline="Settings"/>
             <div className="content">
+                <br /><br />
                 <div className="settings-content-container">
                     <p>Solved all puzzles and want to start over again?</p>
                     <br />
-                    <button onClick={clearSolvedPuzzles} className="custom-button">Clear saved puzzles</button>
+                    <button className="custom-button" onClick={clearSolvedPuzzles} style={{background: "rgba(122, 76, 213, 0.75)", color: "white"} }>🚮 Clear saved puzzles</button>
                     <br />
                     <br />
                     <br />
                     <Link to="/account">
-                        <button>Manage Account</button>
+                        <button style={{background: "rgba(216, 191, 212, 0.67)"}}>↪ Manage Account</button>
                     </Link>
                 </div>
             </div>

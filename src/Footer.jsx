@@ -16,7 +16,7 @@ function Footer() {
 
         <div className="side-section">
           <Link to="/privacy">Privacy</Link>
-          <button onClick={fireContactForm} className="button-as-link">Contact</button>
+          <button style={{boxShadow: "none"}} onClick={fireContactForm} className="button-as-link">Contact</button>
         </div>
       </div>
     </>

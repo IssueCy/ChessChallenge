@@ -96,16 +96,16 @@ function AccountSection() {
             <Navbar />
             <div className="content">
                 <div className="account-section">
-                    <h2>Manage your account</h2>
+                    <h1>Manage your account:</h1>
                     <br />
                     <p style={{ fontStyle: "italic" }}>{user?.email}</p>
                     <br />
-                    <br />
                     <div className="button-container">
-                        <button onClick={logout} className="logout-button">Logout</button>
-                        <button onClick={confirmDeleteAccount} className="delete-button">Delete your account</button>
+                        <button onClick={logout} className="logout-button">⬅️ Logout</button>
+                        <button onClick={confirmDeleteAccount} className="delete-button">🚮 Delete your account</button>
                         <br />
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut laudantium ipsa dolores amet. Aspernatur quod veritatis nesciunt dolore tempore fuga.</p>
+                        <p>‼️ Please be aware that if you decide to delete your account, all data will be deleted immediately and can't be restored later. ‼️</p>
+                        <p>If you forgot your password or want to change it, please contact us through the footer on this site with "Category": Account / Password problems.</p>
                     </div>
                 </div>
             </div>

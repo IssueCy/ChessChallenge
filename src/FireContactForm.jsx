@@ -12,12 +12,13 @@ function fireContactForm() {
             <option value="">-- Please select --</option>
             <option value="Bug">Submit a bug</option>
             <option value="False puzzle">Submit a false puzzle tip/solution</option>
+            <option value="Account problems">Account / Password problems</option>
             <option value="Other">Other</option>
           </select>
 
           <label for="details">Describe the issue:</label>
           <textarea id="details" name="details" rows="4" placeholder="Write your message here..." class="swal-field" required></textarea>
-          <p style="font-style: italic; font-size: small;">If, for some reason, this contact field does not work for you, you can still contact us through this email adress: <strong>simtecapplications@web.de</strong></p>
+          <p style="font-style: italic; font-size: small;">If, for some reason, this contact field does not work for you, you can still contact us through this email adress: <strong>simtecapplications@web.de</strong> <br />But please note that email support is not as fast as direct form support.</p>
         </form>
       `,
       showCancelButton: true,
