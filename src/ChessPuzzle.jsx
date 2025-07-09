@@ -245,7 +245,7 @@ function ChessPuzzle() {
 
 
             <div className="button-section">
-                <button className="util-buttons" onClick={loadNewPuzzle}>New puzzle</button>
+                <button className="util-buttons" onClick={loadNewPuzzle}>→ Next</button>
 
                 {puzzle.solution && currentStep < puzzle.solution.length && (
                     <button
@@ -262,20 +262,20 @@ function ChessPuzzle() {
                             }
                         }}
                     >
-                        Hint
+                        ⁇ Hint
                     </button>
                 )}
 
 
 
                 {solutionShown ? (
-                    <button className="util-buttons" id="resetButton" onClick={resetPuzzle}>Reset puzzle</button>
+                    <button className="util-buttons" id="resetButton" onClick={resetPuzzle}>↩ Reset</button>
                 ) : (
-                    <button className="util-buttons" onClick={animateSolution}>Show solution</button>
+                    <button className="util-buttons" onClick={animateSolution}>✓ Solution</button>
                 )}
 
             </div>
-            <button className="util-buttons" onClick={() => navigate("/")}>Back</button>
+            <button className="util-buttons" onClick={() => navigate("/")}>🏠 Home</button>
 
             <br />
             <br />

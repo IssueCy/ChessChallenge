@@ -37,6 +37,7 @@ button:hover {
 
 .button-as-link {
   background-color: transparent;
+  box-shadow: none;
   padding: 0px;
   color: #39b7dd;
 }
