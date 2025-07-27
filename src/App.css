@@ -1,6 +1,10 @@
+/*! please don't look in here, I know it's an absolute mess, do not expect to find anything in any kind of order. It just works like this so I won't touch anything in this damn css */
+
 * {
   margin: 0px;
 }
+
+
 
 .card {
   margin-top: 10rem;
@@ -12,7 +16,6 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0px;
   margin: 0px;
   padding: 12px;
   border-bottom: 1px solid rgba(80, 80, 122, 0.607);
@@ -84,7 +87,7 @@
 }
 
 .mainPage-SelectPuzzle-section {
-  margin-top: 100px;
+  margin-top: 4rem;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -115,7 +118,6 @@
 
 .mainSection-button-container:hover {
   transform: scale(1.02);
-  /*  apply filter  */
 }
 
 /*? Chess Puzzle */
@@ -190,7 +192,8 @@
 }
 
 .content {
-  flex: 1;
+  flex: 1 1 auto; /* oder */
+  min-width: 0;
 }
 
 .footer {
@@ -257,4 +260,12 @@
   justify-content: center;
   align-items: center;
   justify-self: center;
+}
+
+@media screen and (max-width: 607px) {
+  .navbar h1 {
+    font-size: 20px;
+  }
+
+
 }

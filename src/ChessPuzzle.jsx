@@ -213,7 +213,6 @@ function ChessPuzzle() {
     }
 
 
-
     return (
         <div className="puzzle-container">
             <div id="boardElement">
