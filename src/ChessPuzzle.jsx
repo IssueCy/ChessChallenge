@@ -217,7 +217,7 @@ function ChessPuzzle() {
         <div className="puzzle-container">
             <div id="boardElement">
                 <Chessboard
-                    boardWidth={400}
+                    boardWidth={350}
                     position={game.fen()}
                     onPieceDrop={handleMove}
                     arePiecesDraggable={({ piece }) => piece.startsWith(currentTurn)}
