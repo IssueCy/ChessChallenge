@@ -2,7 +2,6 @@
 
 * {
   margin: 0px;
-  outline: 1px solid red;
 }
 
 *,
@@ -21,10 +20,10 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
   margin: 0px;
   padding: 12px;
   border-bottom: 1px solid rgba(80, 80, 122, 0.607);
+  background-color: #292929;
 }
 
 .navbar h1 {
@@ -35,7 +34,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  gap: 24px;
 }
 
 .nav-account-button {
@@ -87,7 +86,7 @@
 }
 
 .dropdown-menu button:hover {
-  background-color: #f5f5f5;
+  background-color: #e0e0e0;
 }
 
 .mainPage-SelectPuzzle-section {
@@ -182,7 +181,8 @@
   background-color: rgba(151, 51, 51, 0.678);
 }
 
-.logout-button, .delete-button {
+.logout-button,
+.delete-button {
   width: 200px;
   color: white;
 }
@@ -194,12 +194,10 @@
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-
-  outline: 4px solid green;
 }
 
 .content {
-  flex: 1 1 auto; 
+  flex: 1 1 auto;
   min-width: 0;
 }
 
@@ -209,7 +207,9 @@
   justify-content: center;
   flex-wrap: wrap;
   padding: 20px;
-  background-color: #040a166c;
+  background-color: #272729d5;
+  gap: 24px;
+  margin-top: 24px;
 }
 
 .side-section {
@@ -242,7 +242,7 @@
   text-align: left;
   max-width: 800px;
   margin: auto;
-  padding: 12px; 
+  padding: 12px;
 }
 
 .invalid-move {
@@ -251,11 +251,25 @@
 }
 
 @keyframes shake {
-  0% { transform: translate(1px, 0); }
-  25% { transform: translate(-1px, 0); }
-  50% { transform: translate(1px, 0); }
-  75% { transform: translate(-1px, 0); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(1px, 0);
+  }
+
+  25% {
+    transform: translate(-1px, 0);
+  }
+
+  50% {
+    transform: translate(1px, 0);
+  }
+
+  75% {
+    transform: translate(-1px, 0);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 
@@ -275,5 +289,22 @@
     font-size: 20px;
   }
 
+  .nav-right-section {
+    gap: 12px;
+  }
+}
+
+@media screen and (max-width: 476px) {
+  .navbar h1 {
+    display: none;
+  }
+
+  .navbar {
+    justify-content: center; 
+  }
+
+  .nav-right-section {
+    gap: 32px;
+  }
 
 }

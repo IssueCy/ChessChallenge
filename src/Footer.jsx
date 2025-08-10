@@ -6,8 +6,6 @@ function Footer() {
 
   return (
     <>
-      <br />
-      <br />
       <div className="footer">
         <div className="side-section">
           <img className="footer-icon" src="/icon.png" alt="icon" />

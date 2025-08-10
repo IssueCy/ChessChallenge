@@ -212,12 +212,14 @@ function ChessPuzzle() {
         return <div><p>Loading... If this takes longer than 10 seconds, there is a problem with the puzzles.</p></div>;
     }
 
+    let viewportSize = window.visualViewport.width;
+    //! find way to make chessboard responsive
 
     return (
         <div className="puzzle-container">
             <div id="boardElement">
                 <Chessboard
-                    boardWidth={200}
+                    boardWidth={450}
                     position={game.fen()}
                     onPieceDrop={handleMove}
                     arePiecesDraggable={({ piece }) => piece.startsWith(currentTurn)}

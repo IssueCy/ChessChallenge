@@ -14,7 +14,7 @@ const Login = () => {
     try {
       await login(email, password);
     } catch (err) {
-      setError("Fehler beim Login. Überprüfe deine Daten.");
+      setError("Wrong email or password");
     }
   };
 
@@ -23,7 +23,7 @@ const Login = () => {
     try {
       await register(email, password);
     } catch (err) {
-      setError("Fehler bei der Registrierung.");
+      setError("An error occured during registration process");
     }
   };
 
@@ -32,7 +32,7 @@ const Login = () => {
       <div className="content">
         <StyledWrapper>
           <div className="card">
-            <h4 className="title">Login oder Registrieren</h4>
+            <h4 className="title">Login or Register</h4>
             {error && <p style={{ color: "red" }}>{error}</p>}
             <form>
               <div className="field">
@@ -56,7 +56,7 @@ const Login = () => {
                 />
               </div>
               <button className="btn" onClick={handleLogin}>Login</button>
-              <button className="btn" onClick={handleRegister}>Registrieren</button>
+              <button className="btn" onClick={handleRegister}>Register</button>
             </form>
           </div>
         </StyledWrapper>

@@ -5,7 +5,7 @@ import Footer from "./Footer";
 function MainPage() {
 
     return(
-        <div className="wrapper">
+        <div className="wrapper gradient">
             <Navbar />
             <div className="content">
                 <SelectTypeSection />
