@@ -21,6 +21,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   margin: 0px;
   padding: 12px;
   border-bottom: 1px solid rgba(80, 80, 122, 0.607);
@@ -34,7 +35,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 24px;
+
 }
 
 .nav-account-button {
@@ -206,7 +207,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 100px;
+  flex-wrap: wrap;
   padding: 20px;
   background-color: #040a166c;
 }
@@ -231,11 +232,6 @@
   box-sizing: border-box;
 }
 
-.navbar,
-.footer {
-  width: 100%;
-  max-width: 100%;
-}
 
 /*? Privacy */
 
