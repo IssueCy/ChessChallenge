@@ -123,6 +123,26 @@
   transform: scale(1.02);
 }
 
+.main-upperSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  margin: 64px;
+  gap: 12px;
+}
+
+.main-upperSection p {
+  font-weight: 300;
+  font-size: large;
+}
+
+.solvedPuzzlesAmount {
+  font-weight: bold;
+  color: red;
+}
+
 /*? Chess Puzzle */
 
 .puzzle-container {
@@ -305,6 +325,10 @@
 
   .nav-right-section {
     gap: 32px;
+  }
+
+  .main-upperSection {
+    margin: 32px;
   }
 
 }

@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useAuth } from "./auth";
 import styled from "styled-components";
 import Footer from "./Footer";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-  const { login, register } = useAuth();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,23 +19,14 @@ const Login = () => {
     }
   };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      await register(email, password);
-    } catch (err) {
-      setError("An error occured during registration process");
-    }
-  };
-
   return (
     <div className="wrapper">
       <div className="content">
         <StyledWrapper>
           <div className="card">
-            <h4 className="title">Login or Register</h4>
+            <h4 className="title">Login</h4>
             {error && <p style={{ color: "red" }}>{error}</p>}
-            <form>
+            <form onSubmit={handleLogin}>
               <div className="field">
                 <input
                   autoComplete="off"
@@ -55,15 +47,16 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <button className="btn" onClick={handleLogin}>Login</button>
-              <button className="btn" onClick={handleRegister}>Register</button>
+              <button className="btn" type="submit">Login</button>
             </form>
+            <p style={{ marginTop: "1rem" }}>
+              Don't have an account? <Link to="/register">Register now!</Link>
+            </p>
           </div>
         </StyledWrapper>
       </div>
       <Footer />
     </div>
-
   );
 };
 

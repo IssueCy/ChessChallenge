@@ -62,46 +62,52 @@ function ChessPuzzle() {
     }
 
     const handleMove = (sourceSquare, targetSquare) => {
-        const move = game.move({
-            from: sourceSquare,
-            to: targetSquare,
-            promotion: "q",
-        });
-
-        if (move === null) return false;
-
-        const expectedMove = puzzle.solution[currentStep];
-
-        if (move.san === expectedMove) {
-            const newGame = new Chess(game.fen());
-            setGame(newGame);
-
-            if (currentStep + 1 < puzzle.solution.length) {
-                setTimeout(() => {
-                    const computerMove = puzzle.solution[currentStep + 1];
-                    newGame.move(computerMove);
-                    setGame(new Chess(newGame.fen()));
-                    setCurrentStep(currentStep + 2);
-                }, 600);
-            } else {
-                markPuzzleAsSolved(puzzle);
-                displayUserSolvedPuzzleCorrectly();
-                setSolutionShown(true);
-            }
-        } else {
-            const boardElement = document.getElementById("boardElement");
-            boardElement.classList.add("invalid-move");
-            setTimeout(() => boardElement.classList.remove("invalid-move"), 300);
-
-            setTimeout(() => {
-                const newGame = new Chess(puzzle.fen);
+        try {
+            const move = game.move({
+                from: sourceSquare,
+                to: targetSquare,
+                promotion: "q",
+            });
+    
+            if (move === null) return false;
+    
+            const expectedMove = puzzle.solution[currentStep];
+    
+            if (move.san === expectedMove) {
+                const newGame = new Chess(game.fen());
                 setGame(newGame);
-                setCurrentStep(0);
-            }, 500);
+    
+                if (currentStep + 1 < puzzle.solution.length) {
+                    setTimeout(() => {
+                        const computerMove = puzzle.solution[currentStep + 1];
+                        newGame.move(computerMove);
+                        setGame(new Chess(newGame.fen()));
+                        setCurrentStep(currentStep + 2);
+                    }, 600);
+                } else {
+                    markPuzzleAsSolved(puzzle);
+                    displayUserSolvedPuzzleCorrectly();
+                    setSolutionShown(true);
+                }
+            } else {
+                const boardElement = document.getElementById("boardElement");
+                boardElement.classList.add("invalid-move");
+                setTimeout(() => boardElement.classList.remove("invalid-move"), 300);
+    
+                setTimeout(() => {
+                    const newGame = new Chess(puzzle.fen);
+                    setGame(newGame);
+                    setCurrentStep(0);
+                }, 500);
+            }
+    
+            return true;
+        } catch (error) {
+            console.warn("Invalid move attempted:", error);
+            return false;
         }
-
-        return true;
     };
+    
 
     const animateSolution = async () => {
         if (!puzzle || !puzzle.solution || puzzle.solution.length === 0) return;
@@ -209,7 +215,9 @@ function ChessPuzzle() {
     };
 
     if (!puzzle) {
-        return <div><p>Loading... If this takes longer than 10 seconds, there is a problem with the puzzles.</p></div>;
+        return <div style={{margin: "12px"}}><p>Loading... If this takes longer than 10 seconds, there is a problem with the puzzles. Consider creating a bug report at the bottom of the homepage</p>
+            <button onClick={loadNewPuzzle}>Try loading a different puzzle</button>
+        </div>;
     }
 
     let viewportSize = window.visualViewport.width;

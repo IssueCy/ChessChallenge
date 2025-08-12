@@ -1,6 +1,9 @@
 import Swal from "sweetalert2";
+import { useAuth } from "./auth";
+import { auth } from "./firebase";
 
 const webhookUrl = import.meta.env.VITE_DISCORD_CONTACT_WEBHOOK;
+const user = auth.currentUser;
 
 function fireContactForm() {
     Swal.fire({
@@ -44,7 +47,7 @@ function fireContactForm() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            content: `@everyone\n\n📨 New Contact Request\n\n**Reason:** ${reason}\n**Details:**\n${details}`
+            content: `@everyone\n\n📨 New Contact Request\n\n**Reason:** ${reason}\n**Details:**\n${details}\n\n**Report sent by:** ${user?.email}`
           }),
         })
         .then((response) => {
