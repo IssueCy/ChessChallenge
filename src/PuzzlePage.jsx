@@ -9,7 +9,6 @@ function PuzzlePage() {
             <div className="content">
                 <ChessPuzzle />
             </div>
-            <Footer />
         </div>
     );
 }

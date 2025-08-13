@@ -54,6 +54,10 @@ button:hover {
   padding: 0.4em 1em;
 }
 
+
+#green-button {
+  background-color: rgba(64, 199, 64, 0.74);
+}
 /* Background */
 
 .gradient {

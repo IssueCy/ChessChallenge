@@ -9,6 +9,7 @@ function fireContactForm() {
     Swal.fire({
       title: 'Contact Us',
       html: `
+      <p style="font-style: italic; font-size: small; margin-bottom: 12px;"> Please note that by sending this report, you agree that we may contact you back over you account email.</p>
         <form id="contactForm" style="display: flex; flex-direction: column; gap: 10px;">
           <label for="reason">What is your issue?</label>
           <select id="reason" name="reason" class="swal-field" required>
@@ -20,8 +21,8 @@ function fireContactForm() {
           </select>
 
           <label for="details">Describe the issue:</label>
-          <textarea id="details" name="details" rows="4" placeholder="Write your message here..." class="swal-field" required></textarea>
-          <p style="font-style: italic; font-size: small;">If, for some reason, this contact field does not work for you, you can still contact us through this email adress: <strong>simtecapplications@web.de</strong> <br />But please note that email support is not as fast as direct form support.</p>
+          <textarea maxlength="400" id="details" name="details" rows="4" placeholder="Write your message here..." class="swal-field" required></textarea>
+          <p style="font-style: italic; font-size: small;">Use this email if this form does not work: <strong>simtecapplications@web.de</strong></p>
         </form>
       `,
       showCancelButton: true,

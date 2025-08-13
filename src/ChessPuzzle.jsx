@@ -254,7 +254,7 @@ function ChessPuzzle() {
 
 
             <div className="button-section">
-                <button className="util-buttons" onClick={loadNewPuzzle}>→ Next</button>
+                <button className="util-buttons" id="green-button" onClick={loadNewPuzzle}>→ Next</button>
 
                 {puzzle.solution && currentStep < puzzle.solution.length && (
                     <button
