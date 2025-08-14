@@ -52,6 +52,7 @@ button:hover {
 .custom-button {
   border-radius: 4px;
   padding: 0.4em 1em;
+  max-height: 80px;
 }
 
 

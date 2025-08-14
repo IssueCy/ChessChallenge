@@ -301,10 +301,25 @@
 .settings-content-container {
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 80%;
   justify-content: center;
   align-items: center;
   justify-self: center;
+}
+
+.util-settings-container label {
+  font-size: 1rem;
+  margin-right: 6px;
+}
+
+.util-settings-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 24px;
+  padding: 8px;
+  border-bottom: 2px dotted gray;
 }
 
 @media screen and (max-width: 607px) {
@@ -315,6 +330,12 @@
   .nav-right-section {
     gap: 12px;
   }
+
+  .util-settings-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
 }
 
 @media screen and (max-width: 476px) {
@@ -334,4 +355,14 @@
     margin: 32px;
   }
 
+  .puzzle-container {
+    margin-top: 64px;
+  }
+
+}
+
+@media screen and (max-width: 374px) {
+  .puzzle-container {
+    margin-top: 100px;
+  }
 }

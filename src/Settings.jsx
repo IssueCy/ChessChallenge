@@ -23,7 +23,7 @@ function Settings() {
     function clearLocalStorage() {
         if (confirm("Note: If you clear your localstorage, your saved puzzles will be deleted too.")) {
             localStorage.clear();
-            Swal.fire (
+            Swal.fire(
                 'Succes',
                 'Succesfully deleted local storage!',
                 'success'
@@ -38,20 +38,20 @@ function Settings() {
 
     return (
         <div className="wrapper">
-            <Navbar headline="Settings"/>
+            <Navbar headline="Settings" />
             <div className="content">
                 <br /><br />
                 <div className="settings-content-container">
-                    <p>Solved all puzzles and want to start over again?</p>
-                    <br />
-                    <button className="custom-button" onClick={clearSolvedPuzzles} style={{background: "rgba(122, 76, 213, 0.75)", color: "white"} }>🚮 Clear saved puzzles</button>
-                    <br />
-                    <br />
-                    <label style={{fontSize: "0.8rem", margin: "12px"}} htmlFor="clearLS">If you encounter problems with puzzles having a messed up solution or things not behaving as usual, consider clearing your localstorage for this site:</label>
-                    <button id="clearLS" className="custom-button" onClick={clearLocalStorage}>Clear localstorage</button>
-                    <br /><br />
+                    <div className="util-settings-container">
+                        <label>Solved all puzzles and want to start over again?</label>
+                        <button className="custom-button" onClick={clearSolvedPuzzles} style={{ background: "rgba(122, 76, 213, 0.75)", color: "white" }}>🚮 Clear saved puzzles</button>
+                    </div>
+                    <div className="util-settings-container">
+                        <label htmlFor="clearLS">If you encounter problems with puzzles having a messed up solution or things not behaving as usual, consider clearing your localstorage for this site</label>
+                        <button id="clearLS" className="custom-button" onClick={clearLocalStorage}>Clear localstorage</button>
+                    </div>
                     <Link to="/account">
-                        <button style={{background: "rgba(216, 191, 212, 0.67)"}}>↪ Manage Account</button>
+                        <button style={{ background: "rgba(216, 191, 212, 0.67)" }}>↪ Manage Account</button>
                     </Link>
                 </div>
             </div>

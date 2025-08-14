@@ -44,6 +44,7 @@ function ChessPuzzle() {
     const [currentStep, setCurrentStep] = useState(0);
     const [solutionShown, setSolutionShown] = useState(false);
     const [hintSquare, setHintSquare] = useState(null);
+    const [boardWidth, setBoardWidth] = useState(450);
 
 
     function displayUserSolvedPuzzleCorrectly() {
@@ -68,15 +69,15 @@ function ChessPuzzle() {
                 to: targetSquare,
                 promotion: "q",
             });
-    
+
             if (move === null) return false;
-    
+
             const expectedMove = puzzle.solution[currentStep];
-    
+
             if (move.san === expectedMove) {
                 const newGame = new Chess(game.fen());
                 setGame(newGame);
-    
+
                 if (currentStep + 1 < puzzle.solution.length) {
                     setTimeout(() => {
                         const computerMove = puzzle.solution[currentStep + 1];
@@ -93,21 +94,21 @@ function ChessPuzzle() {
                 const boardElement = document.getElementById("boardElement");
                 boardElement.classList.add("invalid-move");
                 setTimeout(() => boardElement.classList.remove("invalid-move"), 300);
-    
+
                 setTimeout(() => {
                     const newGame = new Chess(puzzle.fen);
                     setGame(newGame);
                     setCurrentStep(0);
                 }, 500);
             }
-    
+
             return true;
         } catch (error) {
             console.warn("Invalid move attempted:", error);
             return false;
         }
     };
-    
+
 
     const animateSolution = async () => {
         if (!puzzle || !puzzle.solution || puzzle.solution.length === 0) return;
@@ -214,20 +215,32 @@ function ChessPuzzle() {
         }
     };
 
+    useEffect(() => {
+        function updateBoardWidth() {
+          const viewportSize = window.visualViewport?.width || window.innerWidth;
+
+          let newWidth = viewportSize * 0.9;
+          newWidth = Math.max(300, Math.min(newWidth, 450));
+      
+          setBoardWidth(newWidth);
+        }
+      
+        updateBoardWidth();
+        window.addEventListener("resize", updateBoardWidth);
+        return () => window.removeEventListener("resize", updateBoardWidth);
+      }, []);
+
     if (!puzzle) {
-        return <div style={{margin: "12px"}}><p>Loading... If this takes longer than 10 seconds, there is a problem with the puzzles. Consider creating a bug report at the bottom of the homepage</p>
+        return <div style={{ margin: "12px" }}><p>Loading... If this takes longer than 10 seconds, there is a problem with the puzzles. Consider creating a bug report at the bottom of the homepage</p>
             <button onClick={loadNewPuzzle}>Try loading a different puzzle</button>
         </div>;
     }
 
-    let viewportSize = window.visualViewport.width;
-    //! find way to make chessboard responsive
-
     return (
-        <div className="puzzle-container">
+        <div className="puzzle-container" id="puzzle-container">
             <div id="boardElement">
                 <Chessboard
-                    boardWidth={450}
+                    boardWidth={boardWidth}
                     position={game.fen()}
                     onPieceDrop={handleMove}
                     arePiecesDraggable={({ piece }) => piece.startsWith(currentTurn)}
@@ -271,7 +284,7 @@ function ChessPuzzle() {
                             }
                         }}
                     >
-                        ⁇ Hint
+                        ⁇
                     </button>
                 )}
 
@@ -286,7 +299,6 @@ function ChessPuzzle() {
             </div>
             <button className="util-buttons" onClick={() => navigate("/")}>🏠 Home</button>
 
-            <br />
             <br />
 
             <button onClick={fireContactForm} className="button-as-link">Submit a problem</button>
