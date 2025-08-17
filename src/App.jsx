@@ -4,6 +4,7 @@ import { useAuth } from "./auth";
 import './App.css';
 import Login from './Login';
 import Register from "./Register";
+import ResetPassword from "./ResetPassword";
 import MainPage from './MainPage';
 import SubmitPuzzle from "./SubmitPuzzle";
 import PuzzlePage from "./PuzzlePage";
@@ -18,6 +19,7 @@ return (
 <Router>
   <Routes>
     <Route path="/register" element={<Register />} />
+    <Route path="/resetpassword" element={<ResetPassword />} />
     <Route path="/privacy" element={<Privacy />} />
 
     {user ? (

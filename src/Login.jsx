@@ -15,7 +15,7 @@ const Login = () => {
     try {
       await login(email, password);
     } catch (err) {
-      setError("Wrong email or password");
+      setError(err.message);
     }
   };
 
@@ -51,6 +51,9 @@ const Login = () => {
             </form>
             <p style={{ marginTop: "1rem" }}>
               Don't have an account? <Link to="/register">Register now!</Link>
+            </p>
+            <p style={{ marginTop: "1rem" }}>
+              Forgot your password? <Link to="/ResetPassword">Reset it</Link>
             </p>
           </div>
         </StyledWrapper>

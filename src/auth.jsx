@@ -1,6 +1,14 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import app from "./firebase";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signOut,
+  onAuthStateChanged
+} from "firebase/auth";
 
 const AuthContext = createContext();
 const auth = getAuth(app);
@@ -11,7 +19,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔄 Überwacht den Auth-Status (auch nach einem Reload)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -21,13 +28,26 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    const result = await signInWithEmailAndPassword(auth, email, password);
+
+    if (!result.user.emailVerified) {
+      await signOut(auth);
+      throw new Error("Please verify your email before logging in.");
+    }
+
     setUser(auth.currentUser);
   };
 
   const register = async (email, password) => {
-    await createUserWithEmailAndPassword(auth, email, password);
-    setUser(auth.currentUser);
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    await sendEmailVerification(result.user);
+
+    await signOut(auth);
+    setUser(null);
+  };
+
+  const resetPassword = async (email) => {
+    await sendPasswordResetEmail(auth, email);
   };
 
   const logout = async () => {
@@ -36,8 +56,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
-      {!loading && children} {/* Verhindert das Rendern der App, bis Firebase geladen hat */}
+    <AuthContext.Provider value={{ user, login, register, logout, resetPassword }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

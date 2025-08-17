@@ -2,67 +2,52 @@ import { useState } from "react";
 import { useAuth } from "./auth";
 import styled from "styled-components";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
 
-const Register = () => {
-  const { register } = useAuth();
+const ResetPassword = () => {
+  const { resetPassword } = useAuth();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const [success, setSuccess] = useState("");
-
-  const handleRegister = async (e) => {
+  const handleReset = async (e) => {
     e.preventDefault();
     try {
-      await register(email, password);
-      setSuccess("Registration successful! Please check your email inbox (spam-folder too) and verify your account before logging in.");
+      await resetPassword(email);
+      setMessage("Password reset email sent! Please check your inbox.");
       setError("");
     } catch (err) {
-      setError("An error occurred during registration");
-      setSuccess("");
+      setError("Error sending reset email.");
+      setMessage("");
     }
   };
-  
+
   return (
-    <div className="wrapper">
+<div className="wrapper">
       <div className="content">
         <StyledWrapper>
           <div className="card">
-            <h4 className="title">Register</h4>
+            <h4 className="title">Reset Password</h4>
+            {message && <p style={{ color: "green" }}>{message}</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>{success}</p>}
-            <form onSubmit={handleRegister}>
+            <form onSubmit={handleReset}>
               <div className="field">
                 <input
-                  autoComplete="off"
-                  placeholder="Email"
+                  type="Email"
+                  placeholder="Enter your email"
                   className="input-field"
-                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="field">
-                <input
-                  autoComplete="off"
-                  placeholder="Password"
-                  className="input-field"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <button className="btn" type="submit">Register</button>
+              <button className="btn" type="submit">Send reset email</button>
             </form>
-            <p style={{ marginTop: "1rem" }}>
-              Already have an account? <Link to="/">Login</Link>
-            </p>
           </div>
         </StyledWrapper>
       </div>
       <Footer />
     </div>
+
+    
   );
 };
 
@@ -101,4 +86,4 @@ const StyledWrapper = styled.div`
   }
 `;
 
-export default Register;
+export default ResetPassword;
