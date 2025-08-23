@@ -5,8 +5,25 @@ import { Chess } from "chess.js";
 import Swal from "sweetalert2";
 import fireContactForm from "./FireContactForm";
 
+import { collection, query, where, getDocs, doc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
+import { db } from "./firebase";
+import { useAuth } from "./auth"; 
+
 
 function ChessPuzzle() {
+    const { user } = useAuth(); 
+    const { category } = useParams();
+    const navigate = useNavigate();
+
+    const [game, setGame] = useState(new Chess());
+    const [puzzle, setPuzzle] = useState(null);
+    const [showHint, setShowHint] = useState(false);
+    const [solvedPuzzles, setSolvedPuzzles] = useState([]);
+    const [colorToMove, setColorToMove] = useState("");
+    const [currentStep, setCurrentStep] = useState(0);
+    const [solutionShown, setSolutionShown] = useState(false);
+    const [hintSquare, setHintSquare] = useState(null);
+    const [boardWidth, setBoardWidth] = useState(450);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -18,34 +35,33 @@ function ChessPuzzle() {
         }
     }, []);
 
-    const markPuzzleAsSolved = (puzzle) => {
-        const solved = JSON.parse(localStorage.getItem("solvedPuzzles") || "[]");
-        const puzzleKey = `#${puzzle.id}`;
-
-        if (!solved.includes(puzzleKey)) {
-            solved.push(puzzleKey);
-            localStorage.setItem("solvedPuzzles", JSON.stringify(solved));
+    //get user progress
+    useEffect(() => { 
+        async function fetchProgress() {
+          if (!user) return;
+          const ref = doc(db, "users", user.uid);
+          const snap = await getDoc(ref);
+          if (snap.exists()) {
+            setSolvedPuzzles(snap.data().progress || []);
+          }
         }
-    };
+        fetchProgress();
+      }, [user]);
 
-    const isPuzzleSolved = (puzzle) => {
-        const solved = JSON.parse(localStorage.getItem("solvedPuzzles") || "[]");
-        const puzzleKey = `#${puzzle.id}`;
+      const markPuzzleAsSolved = async (puzzle) => {
+        if (!user) return;
+  
+        const ref = doc(db, "users", user.uid);
+        await updateDoc(ref, {
+          progress: arrayUnion(puzzle.id)
+        });
+  
+        setSolvedPuzzles((prev) => [...prev, puzzle.id]);
+      };
 
-        return solved.includes(puzzleKey);
-    }
-
-    const { category } = useParams();
-    const navigate = useNavigate();
-    const [game, setGame] = useState(new Chess());
-    const [puzzle, setPuzzle] = useState(null);
-    const [showHint, setShowHint] = useState(false);
-    const [colorToMove, setColorToMove] = useState("");
-    const [currentStep, setCurrentStep] = useState(0);
-    const [solutionShown, setSolutionShown] = useState(false);
-    const [hintSquare, setHintSquare] = useState(null);
-    const [boardWidth, setBoardWidth] = useState(450);
-
+      const isPuzzleSolved = (puzzle) => {
+        return solvedPuzzles.includes(puzzle.id);
+      };
 
     function displayUserSolvedPuzzleCorrectly() {
         Swal.fire({
@@ -136,22 +152,8 @@ function ChessPuzzle() {
     const currentTurn = game.turn();
 
     useEffect(() => {
-        const savedPuzzle = localStorage.getItem("currentPuzzle");
-
-        if (savedPuzzle) {
-            const parsedPuzzle = JSON.parse(savedPuzzle);
-            if (parsedPuzzle.fen && parsedPuzzle.solution && parsedPuzzle.category === category) {
-                setPuzzle(parsedPuzzle);
-                setGame(new Chess(parsedPuzzle.fen));
-                return;
-            } else {
-                console.warn("Invalid saved puzzle, ignoring");
-                localStorage.removeItem("currentPuzzle");
-            }
-        }
-
         loadNewPuzzle();
-    }, [category]);
+      }, [category]);
 
     //? what color to move
     useEffect(() => {
@@ -163,57 +165,57 @@ function ChessPuzzle() {
 
     const loadNewPuzzle = async () => {
         try {
-            const response = await fetch("/puzzles.json");
-            const puzzles = await response.json();
-            const categoryPuzzles = puzzles[category];
+          const q = query(
+            collection(db, "puzzles"),
+            where("category", "==", category)
+          );
 
-            if (!categoryPuzzles || categoryPuzzles.length === 0) {
-                console.error("No puzzle found in this category: ", category);
+          const querySnapshot = await getDocs(q);
+      
+          if (querySnapshot.empty) {
+            console.error("No puzzles found in this category: ", category);
+            return;
+          }
+      
+          const categoryPuzzles = querySnapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+              ...data,
+              docId: doc.id
+            };
+          });
+      
+          const unsolvedPuzzles = categoryPuzzles.filter(
+            (p) => !isPuzzleSolved(p)
+          );
+      
+          if (unsolvedPuzzles.length === 0) {
+            Swal.fire({
+              title: "All puzzles in this category have been solved!",
+              text: "Navigate to the account settings to reset your solved puzzles - or wait until new ones!",
+              icon: "info",
+              confirmButtonText: "Back to home",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                navigate("/");
                 return;
-            }
-
-            const unsolvedPuzzles = categoryPuzzles.filter(
-                (p) => !isPuzzleSolved(p)
-            );
-
-            if (unsolvedPuzzles.length === 0) {
-                Swal.fire({
-                    title: 'All puzzles in this category have been solved!',
-                    text: 'Navigate to the account settings to reset your solved puzzles - or wait until new ones!',
-                    icon: 'info',
-                    confirmButtonText: 'Back to home',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        navigate("/");
-                        return;
-                    }
-                });
-            }
-
-            const randomPuzzle = unsolvedPuzzles[Math.floor(Math.random() * unsolvedPuzzles.length)];
-
-            if (!randomPuzzle || !randomPuzzle.fen) {
-                console.warn("False puzzle format or no puzzle left.")
-                return;
-            }
-
-            localStorage.setItem("currentPuzzle", JSON.stringify({
-                ...randomPuzzle,
-                category: category
-            }));
-            setShowHint(false);
-            setPuzzle(randomPuzzle);
-            setGame(new Chess(randomPuzzle.fen));
-
-            //? what color to move?
-            setColorToMove(randomPuzzle.color === "b" ? "Black" : "White");
-
-            setSolutionShown(false);
-
+              }
+            });
+            return;
+          }
+      
+          const randomPuzzle = unsolvedPuzzles[Math.floor(Math.random() * unsolvedPuzzles.length)];
+      
+          setShowHint(false);
+          setPuzzle(randomPuzzle);
+          setGame(new Chess(randomPuzzle.fen));
+          setColorToMove(randomPuzzle.color === "b" ? "Black" : "White");
+          setSolutionShown(false);
+          console.log("[+] loaded new puzzle: #", randomPuzzle.id);
         } catch (error) {
-            console.error("Error while loading puzzle: ", error);
+          console.error("Error while loading puzzle: ", error);
         }
-    };
+      };
 
     useEffect(() => {
         function updateBoardWidth() {
@@ -238,6 +240,13 @@ function ChessPuzzle() {
 
     return (
         <div className="puzzle-container" id="puzzle-container">
+            <span style={{ fontWeight: "bold" }}>#{puzzle.id}</span>
+                {colorToMove && (
+                    <div className="whoToMove">
+                        {colorToMove} to move
+                    </div>
+                )}
+
             <div id="boardElement">
                 <Chessboard
                     boardWidth={boardWidth}
@@ -249,21 +258,15 @@ function ChessPuzzle() {
                             ? {
                                 [hintSquare]: {
                                     backgroundColor: "rgba(105, 220, 76, 0.6)",
-                                },
-                            }
+                                },    
+                            }    
                             : {}
-                    }
+                    }                
                 />
 
             </div>
 
             <br />
-
-            {colorToMove && (
-                <div className="whoToMove">
-                    {colorToMove} to move
-                </div>
-            )}
 
 
             <div className="button-section">

@@ -151,7 +151,7 @@
   align-items: center;
   justify-content: center;
   justify-self: center;
-  margin-top: 4%;
+  margin-top: 2%;
 }
 
 .button-section {
@@ -173,6 +173,7 @@
 .whoToMove {
   font-weight: bold;
   margin: 12px;
+  font-size: 1.4rem;
 }
 
 /*? account section*/
@@ -356,13 +357,13 @@
   }
 
   .puzzle-container {
-    margin-top: 64px;
+    margin-top: 6%;
   }
 
 }
 
 @media screen and (max-width: 374px) {
   .puzzle-container {
-    margin-top: 100px;
+    margin-top: 10%;
   }
 }

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import app from "./firebase";
+import app, { db } from "./firebase";
+import { doc, setDoc } from "firebase/firestore";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -41,6 +42,11 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password) => {
     const result = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(result.user);
+
+    await setDoc(doc(db, "users", result.user.uid), {
+      email: email,
+      progress: []
+    });
 
     await signOut(auth);
     setUser(null);

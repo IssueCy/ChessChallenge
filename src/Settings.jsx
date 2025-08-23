@@ -2,24 +2,44 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useAuth } from "./auth";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "./firebase";
 
 function Settings() {
     const navigate = useNavigate();
+    const { user } = useAuth();
 
-    function clearSolvedPuzzles() {
-        localStorage.removeItem("solvedPuzzles");
-        Swal.fire(
-            'Succes',
-            'Successfully deleted solved puzzles!',
-            'success'
-        ).then((result) => {
-            if (result.isConfirmed) {
-                navigate('/');
-            }
-        });
+    const clearSolvedPuzzles = async () => {
+        if (!user) return;
 
+        try {
+            const ref = doc(db, "users", user.uid);
+
+            await updateDoc(ref, {
+                progress: []
+            });
+
+            Swal.fire(
+                "Success",
+                "Your solved puzzles have been reset!",
+                "success"
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    navigate("/");
+                    window.location.reload();
+                }
+            });
+        } catch (error) {
+            console.error("Error clearing solved puzzles:", error);
+            Swal.fire(
+                "Error",
+                "Could not reset solved puzzles. Please try again.",
+                "error"
+            );
+        }
     }
-
+    //! delete
     function clearLocalStorage() {
         if (confirm("Note: If you clear your localstorage, your saved puzzles will be deleted too.")) {
             localStorage.clear();
