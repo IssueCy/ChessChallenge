@@ -21,6 +21,13 @@ a:hover {
   color: #53a8f2;
 }
 
+.login_disclaimer {
+  text-align: center;
+  justify-self: center;
+  max-width: 400px;
+  font-size: 0.8rem;
+  margin: 12px;
+}
 
 button {
   border-radius: 6px;
