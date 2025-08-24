@@ -47,16 +47,21 @@ function ChessPuzzle() {
         }
         fetchProgress();
       }, [user]);
-
+      
       const markPuzzleAsSolved = async (puzzle) => {
         if (!user) return;
-  
+      
         const ref = doc(db, "users", user.uid);
         await updateDoc(ref, {
           progress: arrayUnion(puzzle.id)
         });
-  
-        setSolvedPuzzles((prev) => [...prev, puzzle.id]);
+      
+        setSolvedPuzzles((prev) => {
+          const updated = [...prev, puzzle.id];
+          return updated;
+        });
+      
+        return;
       };
 
       const isPuzzleSolved = (puzzle) => {
@@ -102,9 +107,11 @@ function ChessPuzzle() {
                         setCurrentStep(currentStep + 2);
                     }, 600);
                 } else {
-                    markPuzzleAsSolved(puzzle);
-                    displayUserSolvedPuzzleCorrectly();
-                    setSolutionShown(true);
+                    (async () => {
+                        await markPuzzleAsSolved(puzzle);
+                        displayUserSolvedPuzzleCorrectly();
+                        setSolutionShown(true);
+                    })();
                 }
             } else {
                 const boardElement = document.getElementById("boardElement");
