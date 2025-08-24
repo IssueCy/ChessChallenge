@@ -35,7 +35,7 @@ function Navbar({ headline = "♟️ChessChallenge" }) {
           {isOpen && (
             <div className="dropdown-menu">
               <Link to="/account">
-                <button style={{boxShadow: "none"}}>🐈‍⬛ Profile</button>
+                <button style={{boxShadow: "none"}}>🐈‍⬛ Account</button>
               </Link>
               <Link to="/settings">
                 <button style={{boxShadow: "none"}}>⚙️ Settings</button>

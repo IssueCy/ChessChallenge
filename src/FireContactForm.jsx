@@ -15,8 +15,8 @@ function fireContactForm() {
         <select id="reason" name="reason" class="swal-field" required>
           <option value="">-- Please select --</option>
           <option value="Bug">Submit a bug</option>
-          <option value="False puzzle">Submit a false puzzle tip/solution</option>
-          <option value="Account problems">Account / Password problems</option>
+          <option value="False puzzle">Submit a faulty puzzle/hint/solution</option>
+          <option value="Account problems">Account related issue</option>
           <option value="Other">Other</option>
         </select>
 

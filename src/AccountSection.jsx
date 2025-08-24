@@ -3,90 +3,60 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Swal from "sweetalert2";
 import { getAuth, reauthenticateWithCredential, EmailAuthProvider, deleteUser } from "firebase/auth";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "./firebase";
 
 function AccountSection() {
     const auth = getAuth();
     const user = auth.currentUser;
     const { logout } = useAuth();
 
-    function reauthenticateAndDelete(password) {
-        Swal.fire({
-            title: 'Are you sure you want to delete your account?',
-            text: "This action cannot be undone!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, do it!',
-            cancelButtonText: 'Cancel',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                if (user) {
-                    const credential = EmailAuthProvider.credential(user.email, password);
+    async function reauthenticateAndDelete(password) {
+        if (!user) return;
 
-                    reauthenticateWithCredential(user, credential)
-                        .then(() => {
-                            deleteUser(user)
-                                .then(() => {
-                                    console.log('User deleted after reauthentication.');
-                                    Swal.fire(
-                                        'Succes',
-                                        'Successfully deleted account!',
-                                        'success'
-                                    );
-                                })
-                                .catch((error) => {
-                                    console.error('Error deleting user after reauthentication:', error);
-                                    Swal.fire(
-                                        'Error',
-                                        'An Error occured, try again later.',
-                                        'error'
-                                    );
-                                });
-                        })
-                        .catch((error) => {
-                            console.error('Error reauthenticating:', error);
-                            Swal.fire(
-                                'Error',
-                                'An Error occured, try again later.',
-                                'error'
-                            );
-                        });
-                }
-            }
-        });
+        const credential = EmailAuthProvider.credential(user.email, password);
 
+        try {
+            await reauthenticateWithCredential(user, credential);
+            await deleteDoc(doc(db, "users", user.uid));
+            await deleteUser(user);
+
+            Swal.fire(
+                "Success",
+                "Your account and all related data have been deleted!",
+                "success"
+            );
+        } catch (error) {
+            console.error("Error while deleting account:", error);
+            Swal.fire(
+                "Error",
+                "An error occurred. Please try again later.",
+                "error"
+            );
+        }
     }
 
     function confirmDeleteAccount() {
+        if (!user) return;
+
         Swal.fire({
-            title: 'Are you sure you want to delete your account?',
-            text: "This action cannot be undone!",
-            icon: 'warning',
+            title: "Enter your password to confirm",
+            input: "password",
+            inputPlaceholder: "Enter your password",
+            inputAttributes: {
+                autocapitalize: "off",
+                autocorrect: "off"
+            },
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, do it!',
-            cancelButtonText: 'Cancel',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                if (user) {
-                    deleteUser(user)
-                        .then(() => {
-                            Swal.fire(
-                                'Done!',
-                                'Your action was successful.',
-                                'success'
-                            );
-                        }).catch((err) => {
-                            console.log(err);
-                            Swal.fire(
-                                'Error',
-                                'An Error occured, please try again later.',
-                                'error'
-                            );
-                        })
+            confirmButtonText: "Delete Account",
+            cancelButtonText: "Cancel",
+            showLoaderOnConfirm: true,
+            preConfirm: (password) => {
+                if (!password) {
+                    Swal.showValidationMessage("You need to enter your password!");
+                    return false;
                 }
+                return reauthenticateAndDelete(password);
             }
         });
     }
@@ -104,16 +74,16 @@ function AccountSection() {
                         <button onClick={logout} className="logout-button">⬅️ Logout</button>
                         <button onClick={confirmDeleteAccount} className="delete-button">🚮 Delete your account</button>
                         <br />
-                        <p>‼️ Please be aware that if you decide to delete your account, all data will be deleted immediately and can't be restored later. ‼️</p>
-                        <p>If you forgot your password or want to change it, please contact us through the footer on this site with "Category": Account / Password problems.</p>
+                        <p>
+                            Read privacy note at the bottom of this page to find out how we handle your
+                            personal data after account deletion.
+                        </p>
                     </div>
                 </div>
             </div>
             <Footer />
         </div>
-
     );
-
 }
 
 export default AccountSection;
