@@ -23,8 +23,4 @@ dist-ssr
 *.sln
 *.sw?
 
-
-# Change later:
-
-# .env
-# public/puzzles.json
+.env
