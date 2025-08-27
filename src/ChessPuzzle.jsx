@@ -140,7 +140,7 @@ function ChessPuzzle() {
         const moves = puzzle.solution;
 
         for (let i = 0; i < moves.length; i++) {
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            await new Promise((resolve) => setTimeout(resolve, 500));
             tempGame.move(moves[i]);
             setGame(new Chess(tempGame.fen()));
         }
