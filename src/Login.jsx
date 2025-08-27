@@ -23,7 +23,7 @@ const Login = () => {
     <div className="wrapper">
       <div className="content">
         <div className="login_disclaimer">
-          <p>‼️Puzzles are still in production, the ones you can solve right now may not have a proper solution because they were used for demonstration purposes.‼️</p>
+          <p>‼️Puzzles are still in production, new ones will follow soon‼️</p>
         </div>
         <StyledWrapper>
           <div className="card">
