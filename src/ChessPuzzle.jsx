@@ -47,6 +47,19 @@ function ChessPuzzle() {
         }
         fetchProgress();
       }, [user]);
+
+      useEffect(() => {
+        if (puzzle) {
+          setGame(new Chess(puzzle.fen));
+          setCurrentStep(0);
+          setSolutionShown(false);
+        }
+      }, [puzzle]);
+
+      const playMoveSound = () => {
+        const audio = new Audio("/move.mp3");
+        audio.play().catch((err) => console.warn("Sound couldn't be played:", err));
+      }
       
       const markPuzzleAsSolved = async (puzzle) => {
         if (!user) return;
@@ -93,6 +106,8 @@ function ChessPuzzle() {
 
             if (move === null) return false;
 
+            playMoveSound();
+
             const expectedMove = puzzle.solution[currentStep];
 
             if (move.san === expectedMove) {
@@ -103,6 +118,7 @@ function ChessPuzzle() {
                     setTimeout(() => {
                         const computerMove = puzzle.solution[currentStep + 1];
                         newGame.move(computerMove);
+                        playMoveSound();
                         setGame(new Chess(newGame.fen()));
                         setCurrentStep(currentStep + 2);
                     }, 600);
@@ -142,6 +158,7 @@ function ChessPuzzle() {
         for (let i = 0; i < moves.length; i++) {
             await new Promise((resolve) => setTimeout(resolve, 500));
             tempGame.move(moves[i]);
+            playMoveSound();
             setGame(new Chess(tempGame.fen()));
         }
 
